@@ -28,6 +28,7 @@
 	import {
 		reactive
 	} from 'vue';
+  import {loginApi} from "../../api/user";
 	
 	// 表单数据
 	const loginModel = reactive({
