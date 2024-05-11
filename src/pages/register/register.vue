@@ -38,15 +38,11 @@
 		reactive
 	} from 'vue';
 	//导入生命周期函数onReady
-	import {
-		onReady
-	} from '@dcloudio/uni-app'
+	import {onReady} from '@dcloudio/uni-app'
 	//表单ref属性
 	const form1 = ref()
 	//导入后端api
-	import {
-		registerApi
-	} from '../../api/user.js'
+	import {registerApi} from '../../api/user.js'
 
 	// 用户选择的头像事件处理函数
 	const onChooseAvatar = (e) => {
@@ -106,28 +102,28 @@
 			trigger: ['change', 'blur'],
 		}],
 	})
+
 	//提交注册表单
 	const commit = () => {
 		form1.value.validate(async (valid) => {
 				if (valid) {
-					if (loginModel.passwordConfirm != loginModel.password)
-						uni.showToast({
-							title: '两次密码不一致',
-							icon: 'none',
-							duration: 2000
-						})
-					return;
-				}
-				let res = await registerApi(loginModel)
-				if (res && res.code == 200) {
-					uni.navigateTo({
-						url: '../login/login'
-					})
-				}
-			
+          if (loginModel.passwordConfirm != loginModel.password){
+            uni.showToast({
+              title: '两次密码不一致',
+              icon: 'none',
+              duration: 2000
+            })
+          return;
+          }
+          let res = await registerApi(loginModel)
+          if (res && res.code == 200) {
+            uni.navigateTo({
+              url: '../login/login'
+            })
+          }
+        }
 		})
 	}
-
 
 	//生命周期函数：页面初次渲染时完成
 	onReady(() => {

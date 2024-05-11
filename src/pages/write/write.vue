@@ -25,14 +25,6 @@
 						</u-form-item>
 						<u-form-item label="图片:"></u-form-item>
 						<u-upload :action="action" :file-list="FileList"></u-upload>
-						
-
-			
-			
-			
-			
-			
-			
 		</u-form>
 		<u-button :custom-style="customStyle">发布</u-button>
 		
