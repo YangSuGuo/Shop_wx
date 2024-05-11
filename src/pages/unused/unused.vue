@@ -91,37 +91,39 @@
 		},
 	]);
 	const flowList = ref([{
-			price: 35,
-			title: '北国风光，千里冰封，万里雪飘',
-			shop: '李白杜甫白居易旗舰店',
-			image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-		},
-		{
-			price: 35,
-			title: '北国风光，千里冰封，万里雪飘',
-			shop: '李白杜甫白居易旗舰店',
-			image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-		}, {
-			price: 35,
-			title: '北国风光，千里冰封，万里雪飘',
-			shop: '李白杜甫白居易旗舰店',
-			image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-		}, {
-			price: 35,
-			title: '北国风光，千里冰封，万里雪飘',
-			shop: '李白杜甫白居易旗舰店',
-			image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-		}, {
-			price: 35,
-			title: '北国风光，千里冰封，万里雪飘',
-			shop: '李白杜甫白居易旗舰店',
-			image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-		}, {
-			price: 35,
-			title: '北国风光，千里冰封，万里雪飘',
-			shop: '李白杜甫白居易旗舰店',
-			image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-		},
+			price: 75,
+					title:'手机',
+					image:'/static/11.jpg',
+				},{
+					price: 385,
+					title:'笔记本电脑',
+					image:'/static/22.jpeg',
+				},{
+					price: 784,
+					title:'耳机',
+					image:'/static/33.jpeg',
+				},{
+					price: 7891,
+					title:'手表',
+					image:'/static/44.jpg',
+				},{
+					price: 2341,
+					title:'养生壶',
+					image:'/static/66.jpeg',
+				},{
+					price: 2342,
+					title:'手表',
+					image:'/static/55.jpg',
+				},{
+					price: 2341,
+					title:'手机',
+					image:'/static/11.jpg',
+				},{
+					price: 2342,
+					title:'电脑',
+					image:'/static/22.jpeg',
+				}
+
 	])
 </script>
 
