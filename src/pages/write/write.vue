@@ -1,40 +1,39 @@
 <template>
   <view class="u-wrap u-p-1-20 u-p-r-20">
-    <u-form :model="addModel" ref="form1">
-      <u-form-item prop="name" label="类型:">
+    <u-form ref="form1" :model="addModel">
+      <u-form-item label="类型:" prop="name">
         <u-radio-group v-model="addModel.name">
-          <u-radio activeColor="#00cc33" v-for="(item, index) in list" :key="index" :name="item.name"
-                   :disabled="item.disabled">
+          <u-radio v-for="(item, index) in list" :key="index" :disabled="item.disabled" :name="item.name"
+                   activeColor="#00cc33">
             {{ item.name }}
           </u-radio>
         </u-radio-group>
       </u-form-item>
-      <u-form-item prop="goodsName" label="名称">
-        <u-input placeholder="请输入名称" v-model="addModel.title"/>
+      <u-form-item label="名称" prop="goodsName">
+        <u-input v-model="addModel.title" placeholder="请输入名称"/>
       </u-form-item>
-      <u-form-item prop="goodsDesc" label="简介">
-        <u-input placeholder="请输入简介" v-model="addModel.introduce"/>
+      <u-form-item label="简介" prop="goodsDesc">
+        <u-input v-model="addModel.introduce" placeholder="请输入简介"/>
       </u-form-item>
-      <u-form-item prop="goodsPrice" label="价格">
-        <u-input placeholder="请输入价格" v-model="addModel.price"/>
+      <u-form-item label="价格" prop="goodsPrice">
+        <u-input v-model="addModel.price" placeholder="请输入价格"/>
       </u-form-item>
-      <u-form-item prop="userName" label-width="auto" label="联系人">
-        <u-input placeholder="请输入联系人" v-model="addModel.userName"/>
+      <u-form-item label="联系人" label-width="auto" prop="userName">
+        <u-input v-model="addModel.userName" placeholder="请输入联系人"/>
       </u-form-item>
-      <u-form-item prop="phone" label-width="auto" label="联系电话">
-        <u-input placeholder="请输入联系电话" v-model="addModel.phone"/>
+      <u-form-item label="联系电话" label-width="auto" prop="phone">
+        <u-input v-model="addModel.phone" placeholder="请输入联系电话"/>
       </u-form-item>
-      <!--      微信号联系地址-->
-      <u-form-item prop="wxNum" label-width="auto" label="微信号:">
-        <u-form-item placeholder="请输入微信号" v-model="addModel.wxNum"></u-form-item>
+      <u-form-item label="微信号:" label-width="auto" prop="wxNum">
+        <u-input v-model="addModel.wxNum" placeholder="请输入微信号"></u-input>
       </u-form-item>
-      <u-form-item prop="address" label-width="auto" label="联系地址:">
+      <u-form-item label="联系地址:" label-width="auto" prop="address">
         <u-input v-model="addModel.address"></u-input>
       </u-form-item>
-      <u-form-item prop="image" label="图片:"></u-form-item>
-      <u-upload ref="imgRef" @on-remove="onRemove" @on-change="onchange" :action="action"></u-upload>
+      <u-form-item label="图片:" prop="image"></u-form-item>
+      <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"></u-upload>
     </u-form>
-    <u-button @click="commit" :custom-style="customStyle">发布</u-button>
+    <u-button :custom-style="customStyle" @click="commit">发布</u-button>
   </view>
 </template>
 
@@ -43,7 +42,7 @@ import {reactive, ref} from 'vue';
 import UFormItem from "../../uni_modules/vk-uview-ui/components/u-form-item/u-form-item.vue";
 import UInput from "../../uni_modules/vk-uview-ui/components/u-input/u-input.vue";
 //引入后端api
-import {categoryApi,releaseApi} from "../../api/goods.js";
+import {categoryApi, releaseApi} from "../../api/goods.js";
 //引入onReady生命周期函数 页面渲染时读后端数据
 import {onReady} from "@dcloudio/uni-app";
 //引入http请求文件
@@ -69,7 +68,7 @@ const addModel = reactive({
 // 物品发布类型
 const list = [
   {
-    value:'0',
+    value: '0',
     name: '闲置',
     disabled: false
   },
@@ -161,102 +160,104 @@ const onRemove = (index) => {
   //去除末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
+
 //闲置 求购类型选择
 const radioChange = (e) => {
   console.log(e)
-  for (let i = 0; i < list.length; i++){
-    if (list[i].name == e){
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].name == e) {
       addModel.type = list[i].value;
     }
   }
 }
+
 //获取表单
-const  form1 = ref()
+const form1 = ref()
 const imgRef = ref()
-//提交表单
-const  commit = () => {
- form1.value.validate(async(valid)=>{
-   let res = await releaseApi(addModel)
-   if (res && res.code == 200){
-     uni.showToast({
-       title: '发布成功',
-       duration: 2000,
-     })
-     //如果发布的是闲置商品，发布成功后跳转到闲置页面
-     if (addModel.type == '0'){
-       uni,switchTab({
-         url:'../unused/unused'
-       })
-     } else {
-       //如果发布的是求购商品。发布成功后跳转到求购页面
-       uni.switchTab({
-         url:'../buy/buy'
-       })
-     }
-     //清空数据
-     form1.value.resetField()
-     imgUrl.value = []
-     addModel.image = '';
-     imgRef.value.clear()
-     return;
-   }
- })
-}
+
 //表单验证规则
 const rules = reactive({
-  name:[{
+  name: [{
     required: true,
-    message:"请选择类型",
-    trigger:['change','blur']
+    message: "请选择类型",
+    trigger: ['change', 'blur']
   }],
-  goodsName:[{
+  goodsName: [{
     required: true,
-    message:"请填写名称",
-    trigger:['change','blur']
+    message: "请填写名称",
+    trigger: ['change', 'blur']
   }],
-  goodsDesc:[{
+  goodsDesc: [{
     required: true,
-    message:"请填写描述",
-    trigger:['change','blur']
+    message: "请填写描述",
+    trigger: ['change', 'blur']
   }],
-  goodsPrice:[{
+  goodsPrice: [{
     required: true,
-    message:"请选择价格",
-    trigger:['change','blur']
+    message: "请选择价格",
+    trigger: ['change', 'blur']
   }],
-  userName:[{
+  userName: [{
     required: true,
-    message:"请选择姓名",
-    trigger:['change','blur']
+    message: "请选择姓名",
+    trigger: ['change', 'blur']
   }],
-  phone:[{
+  phone: [{
     required: true,
-    message:"请选择电话",
-    trigger:['change','blur']
+    message: "请选择电话",
+    trigger: ['change', 'blur']
   }],
-  wxNum:[{
+  wxNum: [{
     required: true,
-    message:"请填写微信号",
-    trigger:['change','blur']
+    message: "请填写微信号",
+    trigger: ['change', 'blur']
   }],
-  address:[{
+  address: [{
     required: true,
-    message:"请填写发布/求购地址",
-    trigger:['change','blur']
+    message: "请填写发布/求购地址",
+    trigger: ['change', 'blur']
   }],
 })
+
 //提交表单
-const  commit = () => {
-  form1.value.validate((valid) => {
-})
-  //生命周期函数
-  onReady(() => {
-    //设置表单验证规则
-    form1.value.setRules(rules);
-    //获取分类数据
-    getSelectList()
+const commit = () => {
+  form1.value.validate(async (valid) => {
+    let res = await releaseApi(addModel)
+    if (res && res.code == 200) {
+      uni.showToast({
+        title: '发布成功',
+        duration: 2000,
+      })
+      //如果发布的是闲置商品，发布成功后跳转到闲置页面
+      if (addModel.type == '0') {
+        uni.switchTab({
+          url: '../unused/unused'
+        })
+      } else {
+        //如果发布的是求购商品。发布成功后跳转到求购页面
+        uni.switchTab({
+          url: '../buy/buy'
+        })
+      }
+
+      //清空数据
+      // form1.value.resetField();
+      form1.value.reset();
+      imgUrl.value = [];
+      addModel.image = '';
+      imgRef.value.clear();
+      return
+    }
   })
 }
+
+//生命周期函数
+onReady(() => {
+  //设置表单验证规则
+  form1.value.setRules(rules);
+  //获取分类数据
+  getSelectList()
+})
 
 </script>
 
