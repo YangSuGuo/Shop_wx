@@ -1,9 +1,9 @@
 <template>
   <view class="u-wrap u-p-1-20 u-p-r-20">
     <u-form ref="form1" :model="addModel">
-      <u-form-item label="类型:" prop="name">
-        <u-radio-group v-model="addModel.name">
-          <u-radio v-for="(item, index) in list" :key="index" :disabled="item.disabled" :name="item.name"
+      <u-form-item label="类型:" prop="name" label-width="
+150rpx"><u-radio-group v-model="addModel.name">
+          <u-radio @change="radioChange" v-for="(item, index) in list" :key="index" :disabled="item.disabled" :name="item.name"
                    activeColor="#00cc33">
             {{ item.name }}
           </u-radio>
@@ -222,31 +222,33 @@ const rules = reactive({
 //提交表单
 const commit = () => {
   form1.value.validate(async (valid) => {
-    let res = await releaseApi(addModel)
-    if (res && res.code == 200) {
-      uni.showToast({
-        title: '发布成功',
-        duration: 2000,
-      })
-      //如果发布的是闲置商品，发布成功后跳转到闲置页面
-      if (addModel.type == '0') {
-        uni.switchTab({
-          url: '../unused/unused'
+    if(valid) {
+      let res = await releaseApi(addModel)
+      if (res && res.code == 200) {
+        uni.showToast({
+          title: '发布成功',
+          duration: 2000,
         })
-      } else {
-        //如果发布的是求购商品。发布成功后跳转到求购页面
-        uni.switchTab({
-          url: '../buy/buy'
-        })
-      }
+        //如果发布的是闲置商品，发布成功后跳转到闲置页面
+        if (addModel.type == '0') {
+          uni.switchTab({
+            url: '../unused/unused'
+          })
+        } else {
+          //如果发布的是求购商品。发布成功后跳转到求购页面
+          uni.switchTab({
+            url: '../buy/buy'
+          })
+        }
 
-      //清空数据
-      // form1.value.resetField();
-      form1.value.reset();
-      imgUrl.value = [];
-      addModel.image = '';
-      imgRef.value.clear();
-      return
+        //清空数据
+        // form1.value.resetField();
+        form1.value.reset();
+        imgUrl.value = [];
+        addModel.image = '';
+        imgRef.value.clear();
+        return
+      }
     }
   })
 }
