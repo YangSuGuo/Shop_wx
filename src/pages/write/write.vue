@@ -242,8 +242,8 @@ const commit = () => {
         }
 
         //清空数据
-        // form1.value.resetField();
-        form1.value.reset();
+         form1.value.resetField();
+
         imgUrl.value = [];
         addModel.image = '';
         imgRef.value.clear();
