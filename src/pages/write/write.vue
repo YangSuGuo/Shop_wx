@@ -32,7 +32,7 @@
         <u-input v-model="addModel.address"></u-input>
       </u-form-item>
       <u-form-item prop="image" label="图片:"></u-form-item>
-      <u-upload @on-remove="onRemove" @on-change="onchange" :action="action"></u-upload>
+      <u-upload ref="imgRef" @on-remove="onRemove" @on-change="onchange" :action="action"></u-upload>
     </u-form>
     <u-button @click="commit" :custom-style="customStyle">发布</u-button>
   </view>
@@ -43,7 +43,7 @@ import {reactive, ref} from 'vue';
 import UFormItem from "../../uni_modules/vk-uview-ui/components/u-form-item/u-form-item.vue";
 import UInput from "../../uni_modules/vk-uview-ui/components/u-input/u-input.vue";
 //引入后端api
-import {categoryApi} from "../../api/goods.js";
+import {categoryApi,releaseApi} from "../../api/goods.js";
 //引入onReady生命周期函数 页面渲染时读后端数据
 import {onReady} from "@dcloudio/uni-app";
 //引入http请求文件
@@ -69,10 +69,12 @@ const addModel = reactive({
 // 物品发布类型
 const list = [
   {
+    value:'0',
     name: '闲置',
     disabled: false
   },
   {
+    value: '1',
     name: '求购',
     disabled: false
   }
@@ -159,6 +161,103 @@ const onRemove = (index) => {
   //去除末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
+//闲置 求购类型选择
+const radioChange = (e) => {
+  console.log(e)
+  for (let i = 0; i < list.length; i++){
+    if (list[i].name == e){
+      addModel.type = list[i].value;
+    }
+  }
+}
+//获取表单
+const  form1 = ref()
+const imgRef = ref()
+//提交表单
+const  commit = () => {
+ form1.value.validate(async(valid)=>{
+   let res = await releaseApi(addModel)
+   if (res && res.code == 200){
+     uni.showToast({
+       title: '发布成功',
+       duration: 2000,
+     })
+     //如果发布的是闲置商品，发布成功后跳转到闲置页面
+     if (addModel.type == '0'){
+       uni,switchTab({
+         url:'../unused/unused'
+       })
+     } else {
+       //如果发布的是求购商品。发布成功后跳转到求购页面
+       uni.switchTab({
+         url:'../buy/buy'
+       })
+     }
+     //清空数据
+     form1.value.resetField()
+     imgUrl.value = []
+     addModel.image = '';
+     imgRef.value.clear()
+     return;
+   }
+ })
+}
+//表单验证规则
+const rules = reactive({
+  name:[{
+    required: true,
+    message:"请选择类型",
+    trigger:['change','blur']
+  }],
+  goodsName:[{
+    required: true,
+    message:"请填写名称",
+    trigger:['change','blur']
+  }],
+  goodsDesc:[{
+    required: true,
+    message:"请填写描述",
+    trigger:['change','blur']
+  }],
+  goodsPrice:[{
+    required: true,
+    message:"请选择价格",
+    trigger:['change','blur']
+  }],
+  userName:[{
+    required: true,
+    message:"请选择姓名",
+    trigger:['change','blur']
+  }],
+  phone:[{
+    required: true,
+    message:"请选择电话",
+    trigger:['change','blur']
+  }],
+  wxNum:[{
+    required: true,
+    message:"请填写微信号",
+    trigger:['change','blur']
+  }],
+  address:[{
+    required: true,
+    message:"请填写发布/求购地址",
+    trigger:['change','blur']
+  }],
+})
+//提交表单
+const  commit = () => {
+  form1.value.validate((valid) => {
+})
+  //生命周期函数
+  onReady(() => {
+    //设置表单验证规则
+    form1.value.setRules(rules);
+    //获取分类数据
+    getSelectList()
+  })
+}
+
 </script>
 
 <style>
