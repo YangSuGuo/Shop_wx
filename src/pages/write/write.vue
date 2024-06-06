@@ -242,8 +242,7 @@ const commit = () => {
         }
 
         //清空数据
-        // form1.value.resetField();
-        form1.value.reset();
+        form1.value.resetField();
         imgUrl.value = [];
         addModel.image = '';
         imgRef.value.clear();
@@ -251,15 +250,17 @@ const commit = () => {
       }
     }
   })
-}
 
 //生命周期函数
-onReady(() => {
-  //设置表单验证规则
-  form1.value.setRules(rules);
-  //获取分类数据
-  getSelectList()
-})
+  onReady(() => {
+    //设置表单验证规则
+    form1.value.setRules(rules);
+    //获取分类数据
+    getSelectList()
+  })
+
+}
+
 
 </script>
 
