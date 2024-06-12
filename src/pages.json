@@ -62,6 +62,15 @@
         }
 
 
+        ,{
+            "path" : "pages/unused_detail/unused_detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "闲置商品详细",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		//导航栏字体颜色
