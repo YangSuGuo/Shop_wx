@@ -2,21 +2,21 @@
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	{
 	    "path" : "pages/register/register",
-	    "style" :                                                                                    
+	    "style" :
 	    {
 	        "navigationBarTitleText": "注册",
 	        "enablePullDownRefresh": false
 	    }
-	    
+
 	},
 		{
 		    "path" : "pages/login/login",
-		    "style" :                                                                                    
+		    "style" :
 		    {
 		        "navigationBarTitleText": "登录",
 		        "enablePullDownRefresh": false
 		    }
-		    
+
 		},
 		{
 			"path": "pages/index/index",
@@ -26,42 +26,42 @@
 		}
 	    ,{
             "path" : "pages/unused/unused",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "闲置",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/write/write",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "发布",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/buy/buy",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "求购",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/mine/mine",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "我的",
                 "enablePullDownRefresh": false
             }
-            
+
         }
-        
-        
+
+
     ],
 	"globalStyle": {
 		//导航栏字体颜色
@@ -77,28 +77,28 @@
 		"backgroundColor": "#ffffff",
 		"list": [{
 			"pagePath": "pages/index/index",
-			"iconPath": "static/home.png",
-			"selectedIconPath": "static/home_select.png",
+			"iconPath": "static/Navigation_bar/home.png",
+			"selectedIconPath": "static/Navigation_bar/home_select.png",
 			"text": "首页"
 		},{
 			"pagePath": "pages/unused/unused",
-			"iconPath": "static/unused.png",
-			"selectedIconPath": "static/unused_select.png",
+			"iconPath": "static/Navigation_bar/unused.png",
+			"selectedIconPath": "static/Navigation_bar/unused_select.png",
 			"text": "闲置"
 		},{
 			"pagePath": "pages/write/write",
-			"iconPath": "static/write.png",
-			"selectedIconPath": "static/write_select.png",
+			"iconPath": "static/Navigation_bar/write.png",
+			"selectedIconPath": "static/Navigation_bar/write_select.png",
 			"text": "发布"
 		},{
 			"pagePath": "pages/buy/buy",
-			"iconPath": "static/buy.png",
-			"selectedIconPath": "static/buy_select.png",
+			"iconPath": "static/Navigation_bar/buy.png",
+			"selectedIconPath": "static/Navigation_bar/buy_select.png",
 			"text": "求购"
 		},{
 			"pagePath": "pages/mine/mine",
-			"iconPath": "static/mine.png",
-			"selectedIconPath": "static/mine_select.png",
+			"iconPath": "static/Navigation_bar/mine.png",
+			"selectedIconPath": "static/Navigation_bar/mine_select.png",
 			"text": "我的"
 		}
 		]
