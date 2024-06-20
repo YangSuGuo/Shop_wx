@@ -20,7 +20,7 @@ export const getUsedListApi = (parm) => {
 export const getBuyListApi = (parm) => {
     return http.get('/api/v1/goods/getBuyList', parm)
 }
-
+//查询求购商品
 export const getWantedListApi = (parm) => {
     return http.get('/api/v1/goods/wanted/list', parm)
 }
