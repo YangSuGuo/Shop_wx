@@ -17,5 +17,16 @@ export const getUsedListApi = (parm)=>{
 }
 //查询求购商品列表
 export const getBuyListApi = (parm)=>{
-	return http.get('/api/goods/getBuyList',parm)
+	return http.get('/api/v1/goods/getBuyList',parm)
+}
+export const getWantedListApi = (parm)=>{
+	return http.get('/api/v1/goods/wanted/list',parm)
+}
+//我的商品列表
+export const getMyGoodsListApi = (parm)=>{
+	return http.get('/api/v1/goods/getMyGoodsList',parm)
+}
+//修改发布后的商品信息
+export const editApi = (parm)=>{
+	return http.get('/api/v1/goods/edit',parm)
 }
