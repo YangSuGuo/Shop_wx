@@ -30,3 +30,11 @@ export const getMyGoodsListApi = (parm)=>{
 export const editApi = (parm)=>{
 	return http.get('/api/v1/goods/edit',parm)
 }
+//下架
+export const upanddownpi = (parm)=>{
+	return http.get('/api/v1/goods/upanddown',parm)
+}
+//删除
+export const deleteApi = (parm)=>{
+	return http.get('/api/v1/goods/delete',parm)
+}
