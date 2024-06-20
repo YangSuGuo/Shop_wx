@@ -100,15 +100,15 @@
 	 <view style="padding: 50px 15px 30px 15px;">
 		 <u-form label-width="auto" :model="addModel" ref="form1">
 			 <u-form-item label="请输入金额" prop="price"></u-form-item>
-			 <u-input v-model="addModel.price"></u-input>
+			 <u-input></u-input>
 		 </u-form>
-	 </view>
+	 </view> 
 	 <view class="conBtn">
 	<u-button @click="cancel" style="margin-right: 15px;" type="info">取消交易</u-button>
 	<u-button @click="confirm" style="margin-left: 15px;" :custom-style="customStyle" type="error">确认交易</u-button>
 	 </view>
   </u-popup>
-
+  
    <u-popup :mask-close-able="false" border-radius="15" width="85%" height="200px" v-model="reportShow" mode="center">
   		  <view style="padding: 50px 15px 30px 15px;">
   			  <u-form label-width="auto" :model="reportModel" ref="form1">
@@ -167,8 +167,7 @@ const address = ref('')
 const wxNum = ref('')
 const phone = ref('')
 const createTime = ref('')
-//商品创建人id
-const creatUser = ref('')
+
 onLoad((options) => {
   const goods = JSON.parse(options.goods)
   goodsId.value = goods.goodsId;
@@ -182,10 +181,6 @@ onLoad((options) => {
   createTime.value = goods.createTime;
   phone.value = goods.phone;
   wxNum.value = goods.wxNum;
-  //要卖东西的用户
-  creatUser.value = goods.userId;
-  //商品id
-  addModel.goodsId = goods.goodsId
 
 })
 
@@ -203,10 +198,7 @@ const callPhone = () => {
 
 const show = ref(false)
 const addModel = reactive({
-price: "",
-goodsId:"",
-//当前登录用户，即交易用户
-orderUser: uni.getStorageSync("userId")
+price: ""
 })
  const toBuy = () => {
 	 show.value = true;
@@ -214,27 +206,9 @@ orderUser: uni.getStorageSync("userId")
 const cancel = () => {
   show.value = false;
 }
-//交易确定
-const confirm = async() => {
- if(!addModel.price){
-	 uni.showToast({
-	 	title:"请填写交易金额",
-		icon:"none",
-		mask:true,
-		duration:3000
-	 })
-	 return;
- }
- let res =await replaceOrderApi(addModel)
- if(res && res.code == 200){
-	 show.value = false;
-	 uni.showTabBar({
-		 title:"交易成功",
-		 icon:"none",
-		 mask:true,
-		 duration:3000
-	 })
- }
+
+const confirm = () => {
+  show.value = false;
 }
 
 

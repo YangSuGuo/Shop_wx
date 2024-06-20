@@ -71,6 +71,87 @@
             }
             
         }
+        ,{
+            "path" : "pages/buy_detail/buy_detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "求购商品详细",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/unused_edit/unused_edit",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "闲置商品修改",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my_unused/my_unused",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的闲置",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/my_buy/my_buy",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "我的求购",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/my_collect/my_collect",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的收藏",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my_order/my_order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my_sell_order/my_sell_order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "出售订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/update_password/update_password",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "更改密码",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/look_my_unused/look_my_unused",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "查看闲置",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		//导航栏字体颜色
