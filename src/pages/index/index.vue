@@ -75,7 +75,7 @@
 // 1.引入vue3中的ref模版
 import {ref} from 'vue';
 import {getIndexListApi} from "../../api/index";
-import {onReady,onReachBottom} from "@dcloudio/uni-app";
+import {onReachBottom, onReady} from "@dcloudio/uni-app";
 
 // 2.响应式数据
 const indicatorDots = ref(false) //有小圆点
@@ -100,14 +100,14 @@ const swipperList = ref([
 const flowList = ref([])
 
 //加载更多
-const loadStatus =ref('loadmore')
+const loadStatus = ref('loadmore')
 //点击查询参数
-const currentPage =ref(1)//当前页数
-const pageSize=ref(5)//每页查询条数
-const pages=ref(0)//总页数
-const keywords =ref('')//查询关键字
+const currentPage = ref(1)//当前页数
+const pageSize = ref(5)//每页查询条数
+const pages = ref(0)//总页数
+const keywords = ref('')//查询关键字
 // 读取推荐到首页的商品数据
-const getIndexList=async()=> {
+const getIndexList = async () => {
   let res = await getIndexListApi({
     currentPage: currentPage.value,
     pageSize: pageSize.value,
@@ -124,15 +124,15 @@ const uWaterFall1 = ref()
 //搜索功能
 const searchList = () => {
   uWaterFall1.value.clear()//清至深布流
-  currentPage.value=1;//当前页面
-  loadstatus.value='loading' //加载更多
+  currentPage.value = 1;//当前页面
+  loadstatus.value = 'loading' //加载更多
   getIndexList()//根据关键字查询瀑布流
 }
 //触底加载
-onReachBottom(() =>{
+onReachBottom(() => {
   console.log('触底加载更多')
   //如果当前页面大于等于总页数，状态修改为没有更多就不再继续执行代码
-  if(currentPage.value >= pages.value) {
+  if (currentPage.value >= pages.value) {
     loadStatus.value = 'nomore';
     return;
   }
@@ -143,10 +143,9 @@ onReachBottom(() =>{
 })
 
 
-
-  onReady(()=> {
-    getIndexList()//读取首页数据
-  })
+onReady(() => {
+  getIndexList()//读取首页数据
+})
 
 
 </script>

@@ -1,39 +1,52 @@
 <template>
   <view class="u-wrap u-p-1-20 u-p-r-20">
-    <u-form ref="form1" :model="addModel">
-      <u-form-item label="类型:" prop="name" label-width="
-150rpx"><u-radio-group v-model="addModel.name">
-          <u-radio @change="radioChange" v-for="(item, index) in list" :key="index" :disabled="item.disabled" :name="item.name"
-                   activeColor="#00cc33">
-            {{ item.name }}
-          </u-radio>
-        </u-radio-group>
-      </u-form-item>
-      <u-form-item label="名称" prop="goodsName">
-        <u-input v-model="addModel.title" placeholder="请输入名称"/>
-      </u-form-item>
-      <u-form-item label="简介" prop="goodsDesc">
-        <u-input v-model="addModel.introduce" placeholder="请输入简介"/>
-      </u-form-item>
-      <u-form-item label="价格" prop="goodsPrice">
-        <u-input v-model="addModel.price" placeholder="请输入价格"/>
-      </u-form-item>
-      <u-form-item label="联系人" label-width="auto" prop="userName">
-        <u-input v-model="addModel.userName" placeholder="请输入联系人"/>
-      </u-form-item>
-      <u-form-item label="联系电话" label-width="auto" prop="phone">
-        <u-input v-model="addModel.phone" placeholder="请输入联系电话"/>
-      </u-form-item>
-      <u-form-item label="微信号:" label-width="auto" prop="wxNum">
-        <u-input v-model="addModel.wxNum" placeholder="请输入微信号"></u-input>
-      </u-form-item>
-      <u-form-item label="联系地址:" label-width="auto" prop="address">
-        <u-input v-model="addModel.address"></u-input>
-      </u-form-item>
-      <u-form-item label="图片:" prop="image"></u-form-item>
-      <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"></u-upload>
-    </u-form>
-    <u-button :custom-style="customStyle" @click="commit">发布</u-button>
+    <view class="content">
+      <image class="imgBanner"
+             src="https://img.picui.cn/free/2024/06/21/6675809ef1f73.png"/>
+      <view style="padding: 20rpx">
+        <u-form ref="form1" :model="addModel">
+          <u-form-item prop="name" label-width="150rpx">
+            <u-radio-group v-model="addModel.name">
+              <u-radio @change="radioChange" v-for="(item, index) in list" :key="index" :disabled="item.disabled"
+                       :name="item.name"
+                       activeColor="#00cc33">
+                {{ item.name }}
+              </u-radio>
+            </u-radio-group>
+          </u-form-item>
+          <u-form-item prop="goodsName">
+            <u-input v-model="addModel.title" placeholder="请输入名称" clearable
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item prop="goodsDesc">
+            <u-input v-model="addModel.introduce" placeholder="请输入简介" clearable
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item prop="goodsPrice">
+            <u-input v-model="addModel.price" placeholder="请输入价格" clearable
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="userName">
+            <u-input v-model="addModel.userName" placeholder="请输入联系人" clearable
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="phone">
+            <u-input v-model="addModel.phone" placeholder="请输入联系电话" clearable
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="wxNum">
+            <u-input v-model="addModel.wxNum" placeholder="请输入微信号" clearable
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="address">
+            <u-input v-model="addModel.address" placeholder="请输入联系地址" clearable prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item label="图片:" prop="image"/>
+          <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"/>
+        </u-form>
+        <u-button :custom-style="customStyle" @click="commit">发布</u-button>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -222,7 +235,7 @@ const rules = reactive({
 //提交表单
 const commit = () => {
   form1.value.validate(async (valid) => {
-    if(valid) {
+    if (valid) {
       let res = await releaseApi(addModel)
       if (res && res.code == 200) {
         uni.showToast({
@@ -258,12 +271,18 @@ const commit = () => {
     //获取分类数据
     getSelectList()
   })
-
 }
-
-
 </script>
 
-<style>
+<style scoped>
+.content {
+  padding: 40rpx;
+}
 
+.imgBanner {
+  width: 100%;
+  height: 250rpx;
+  border-radius: 20rpx;
+  background: #FFF;
+}
 </style>

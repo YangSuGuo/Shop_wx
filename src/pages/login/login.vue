@@ -53,7 +53,7 @@ const toCommit = async () => {
   let res = await loginApi(loginModel)
   if (res && res.code == 200) {
     //储存用户id
-    uni.setStorageSync('userId', res.data.userID)
+    uni.setStorageSync('userId', res.data.userId)
     //跳转首页
     uni.switchTab({
       url: '../index/index'

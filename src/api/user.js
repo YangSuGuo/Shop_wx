@@ -13,5 +13,5 @@ export const editInfoApi = (parm)=>{
 }
 //查询个人信息
 export const getInfoApi = (parm)=>{
-	return http.post('/api/v1/wxUser/getInfo',parm)
+	return http.get('/api/v1/wxUser/getInfo',parm)
 }
