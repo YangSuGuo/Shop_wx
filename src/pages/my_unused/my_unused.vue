@@ -35,25 +35,28 @@
 		<u-loadmore bgColor="#f2f2f2" :status="loadstatus"></u-loadmore>
 		<!-- 删除弹窗 -->
 		<u-popup :mask-close-able="false" border-radius="15" width="70%" height="120px" v-model="show" mode="center">
-			<view style="padding: 20px 15px 20px 65px;">
-				确定删除该商品？
-			</view>
-			<view style="display: flex;justify-content: center;align-items: center;height: 50px;">
-				<u-button @click="cancel" style="margin-right: 15px;" type="info"></u-button>
-				<u-button @click="confirm" style="margin-left: 15px;" :custom-style="custonStyle" type="error">确认
-				</u-button>
-			</view>
-
+		<view style="padding: 20px 15px 20px 65px;">
+			确定删除该商品？
+		</view>	
+		<view style="display: flex;justify-content: center;align-items: center;height: 50px;">
+			<u-button @click="cancel" style="margin-right: 15px;" type="info"></u-button>
+			<u-button @click="confirm" style="margin-left: 15px;" :custom-style="custonStyle" type="error">确认</u-button>
+		</view>
+			
 		</u-popup>
 	</view>
 </template>
 <script setup>
 	//引入相关函数
 	import {
+		ref,
+		reactive
+	} from 'vue';
+	import {
 		onReady,
 		onReachBottom
 	} from '@dcloudio/uni-app';
-
+	
 	// const list = ref([{
 	// 		goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81 ae4b2f7f3bb7.jpg ',
 	// 		title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风 ',
@@ -78,66 +81,67 @@
 	//总页数
 	const pages = ref(0)
 	//获取列表数据
-	const getMyUnusedList = async () => {
+	const getMyUnusedList = async () =>{
 		let res = await getMyUnusedListApi(parm)
 		if (res && res.code == 200) {
 			pages.value = res.data.pages;
-			list.value = list.value.concat(res.data.records) //商品数据
+			list.value = list.value.concat(res.data.records)//商品数据
 		}
 	}
-
-
+	
+	
 	//加载状态
 	const loadstatus = ref('loadmore')
 	//触底加载
-	onReachBottom(() => {
-		if (parm.currentPage >= pages.value) {
+	onReachBottom(() =>{
+		if(parm.currentPage >=pages.value){
 			loadstatus.value = "nomore"
 			return;
-		}
-		loadstatus.value = "loading"
-		parm.currentPage = ++parm.currentPage;
-		getMyUnusedList()
+    }
+			loadstatus.value = "loading"
+			parm.currentPage = ++parm.currentPage;
+			getMyUnusedList()
 
 	})
-
+	
 	//跳转到编辑商品页面
 	const editBtn = (item) => {
 		uni.navigateTo({
-			url: "../unused_edit/unused_edit?goods=" + JSON.stringify(item)
+			url:"../unused_edit/unused_edit?goods="+JSON.stringify(item)
 		})
 	}
 	//跳转查看闲置页面
 	const lookBtn = (item) => {
 		uni.navigateTo({
-			url: "../look_my_unused/look_my_unused?goods=" + JSON.stringify(item)
+			url:"../look_my_unused/look_my_unused?goods="+JSON.stringify(item)
 		})
 	}
 	//删除
 	const deleteId = ref('')
 	const show = ref(false)
-	const deleteBtn = (item) => {
+	const deleteBtn= (item) =>{
 		deleteId.value = item.goodsId;
 		show.value = true;
 		console.log(deleteId.value)
+		
+	}
+	const cancel = () =>{
+		show.value = false;
 
 	}
-	const cancel = () => {
-		show.value = false;
-	}
 	const confirm = async () => {
-		let res = await deleteApi({
+		let res =await deleteApi({
 			goodsId: deleteId.value
 		})
-		if (res && res.code == 200) {
+		if(res && res.code == 200){
 			list.value = []
 			parm.currentPage = 1;
-			getMyUnusedList() //重新获取商品列表
-			show.value = false;
+			getMyUnusedList()//重新获取商品列表
+			show.value=false;
 			//1306
 		}
 	}
-	onReady(() => {
+	onReady(() =>{
 		getMyUnusedList()
 		//工单1302
 	})

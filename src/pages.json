@@ -152,6 +152,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/user_info/user_info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "修改个人信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		//导航栏字体颜色

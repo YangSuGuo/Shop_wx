@@ -129,13 +129,13 @@ const getSelectList = async () => {
 
 
 //读取后端分类数据
-const getSelectList2 = async () => {
-  let res = await categoryApi()
-  if (res && res.code == 200) {
-    console.log(res)
-    selectList.value = res.data;
-  }
-}
+// const getSelectList = async () => {
+//   let res = await categoryApi()
+//   if (res && res.code == 200) {
+//     console.log(res)
+//     selectList.value = res.data;
+//   }
+// }
 
 //生命周期函数
 onReady(() => {
@@ -214,7 +214,8 @@ const rules = reactive({
   goodsPrice: [{
     required: true,
     message: "请选择价格",
-    trigger: ['change', 'blur']
+    trigger: ['change', 'blur'],
+	type: 'number',
   }],
   userName: [{
     required: true,
