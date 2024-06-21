@@ -1,163 +1,166 @@
 <template>
-	<view class="u-p-t-40 u-p-r-60 u-p-b-30 u-p-1-60 logincontainer">
-		<!-- 头像Logo -->
-		<button class="avatarwrap" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-			<image class="avatar" :src="avatar"></image>
-		</button>
+  <view class="Login">
+    <view class="container">
+      <image class="imgBanner"
+             src="https://img.picui.cn/free/2024/06/21/6675809ef1f73.png"/>
 
-		<!-- 注册表单 -->
-		<u-form class="forms" :model="loginModel" ref="form1">
-			<u-form-item prop="phone" left-icon="phone-fill" left-icon-style="font-size:24px;color:#FF7670;">
-				<u-input placeholder="请输入电话" v-model="loginModel.phone" />
-			</u-form-item>
-
-			<u-form-item prop="username" left-icon="account-fill" left-icon-style="font-size:24px;color:#FF7670;">
-				<u-input placeholder="请输入账户" v-model="loginModel.username" />
-			</u-form-item>
-
-			<u-form-item prop="password" left-icon="lock" left-icon-style="font-size:24px;color:#FF7670;">
-				<u-input placeholder="请输入密码" v-model="loginModel.password" />
-			</u-form-item>
-
-			<u-form-item prop="passwordConfirm" left-icon="lock" left-icon-style="font-size:24px;color:#FF7670;">
-				<u-input placeholder="请输入确定密码" v-model="loginModel.passwordConfirm" />
-			</u-form-item>
-
-			<view class="passtext" @click="toLogin">已有账号,去登录</view>
-
-			<!-- 注册按钮 -->
-			<u-button type="success" :custom-style="customStyle1" @click="commit">注册</u-button>
-		</u-form>
-	</view>
+      <view class="registerFrom">
+        <u-form class="form" :model="loginModel" ref="form1" :error-type="['border-bottom']">
+          <u-form-item prop="phone" class="input">
+            <u-input v-model="loginModel.phone" clearable placeholder="请输入电话"
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item prop="username" class="input">
+            <u-input v-model="loginModel.username" clearable placeholder="请输入账户"
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item prop="password" class="input">
+            <u-input v-model="loginModel.password" clearable placeholder="请输入密码" type="password"
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item prop="passwordConfirm" class="input">
+            <u-input v-model="loginModel.passwordConfirm" clearable placeholder="请输入确定密码" type="password"
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <view style="margin-top: 40rpx"/>
+          <u-button style="width: 90%" type="primary" @click="commit">注册</u-button>
+          <view class="register">
+            <text>已有账号？</text>
+            <text class="link-text" @click="toLogin">去登录</text>
+          </view>
+        </u-form>
+      </view>
+    </view>
+  </view>
 </template>
 
 
 <script setup>
-	import {
-		ref,
-		reactive
-	} from 'vue';
-	//导入生命周期函数onReady
-	import {onReady} from '@dcloudio/uni-app'
-	//表单ref属性
-	const form1 = ref()
-	//导入后端api
-	import {registerApi} from '../../api/user.js'
+import {reactive, ref} from 'vue';
+import {onReady} from '@dcloudio/uni-app'
+import {registerApi} from '../../api/user.js'
 
-	// 用户选择的头像事件处理函数
-	const onChooseAvatar = (e) => {
-		const {
-			avatarUrl
-		} = e.detail
-		avatar.value = avatarUrl
-	};
+const form1 = ref()
 
-	// 默认Logo头像URL
-	const avatar = ref('/static/Login/user.jpg');
+// 注册表单数据模型
+const loginModel = reactive({
+  phone: '',
+  username: '',
+  password: '',
+  passwordConfirm: ''
+});
 
-	// 注册表单数据模型
-	const loginModel = reactive({
-		phone: '',
-		username: '',
-		password: '',
-		passwordConfirm: '' // 确认密码
-	});
+// 去登录
+const toLogin = () => {
+  uni.navigateTo({
+    url: '../login/login'
+  })
+};
 
-	// 注册按钮样式
-	const customStyle1 = reactive({
-		marginTop: '40px',
-		color: '#FFF',
-		width: '100%'
-	});
-	// 去登录
-	const toLogin = () => {
-		uni.navigateTo({
-			url: '../login/login'
-		})
-	};
-	//表单验证规则
-	const rules = reactive({
-		phone: [{
-			required: true,
-			message: '请输入电话',
-			//可以单个或者同时写两个触发验证方式
-			trigger: ['change', 'blur'],
-		}],
-		username: [{
-			required: true,
-			message: '请输入账号',
-			//可以单个或者同时写两个触发验证方式
-			trigger: ['change', 'blur'],
-		}],
-		password: [{
-			required: true,
-			message: '请输入密码',
-			//可以单个或者同时写两个触发验证方式
-			trigger: ['change', 'blur'],
-		}],
-		passwordConfirm: [{
-			required: true,
-			message: '请输入确定密码',
-			//可以单个或者同时写两个触发验证方式
-			trigger: ['change', 'blur'],
-		}],
-	})
+//表单验证规则
+const rules = reactive({
+  phone: [{
+    required: true,
+    message: '请输入电话',
+    trigger: ['change', 'blur'],
+  }],
+  username: [{
+    required: true,
+    message: '请输入账号',
+    trigger: ['change', 'blur'],
+  }],
+  password: [{
+    required: true,
+    message: '请输入密码',
+    trigger: ['change', 'blur'],
+  }],
+  passwordConfirm: [{
+    required: true,
+    message: '请输入确定密码',
+    trigger: ['change', 'blur'],
+  }],
+})
 
-	//提交注册表单
-	const commit = () => {
-		form1.value.validate(async (valid) => {
-				if (valid) {
-          if (loginModel.passwordConfirm != loginModel.password){
-            uni.showToast({
-              title: '两次密码不一致',
-              icon: 'none',
-              duration: 2000
-            })
-          return;
-          }
-          let res = await registerApi(loginModel)
-          if (res && res.code == 200) {
-            uni.navigateTo({
-              url: '../login/login'
-            })
-          }
-        }
-		})
-	}
+//提交注册表单
+const commit = () => {
+  form1.value.validate(async (valid) => {
+    if (valid) {
+      if (loginModel.passwordConfirm != loginModel.password) {
+        uni.showToast({
+          title: '两次密码不一致',
+          icon: 'none',
+          duration: 2000
+        })
+      }
 
-	//生命周期函数：页面初次渲染时完成
-	onReady(() => {
-		//运用验证规则
-		form1.value.setRules(rules);
-	})
+      let res = await registerApi(loginModel)
+      if (res && res.code == 200) {
+        uni.navigateTo({
+          url: '../login/login'
+        })
+      }
+
+    }
+  })
+}
+
+//生命周期函数：页面初次渲染时完成
+onReady(() => {
+  form1.value.setRules(rules);
+})
 </script>
 
-<style lang="scss">
-	.logincontainer {
-		margin-left: 10px;
-	}
+<style scoped>
+.Login {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
 
-	.avatarwrap {
-		border-radius: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 70px;
-		width: 70px;
-		padding: 0px;
+.container {
+  width: 95%;
+  margin-top: 200rpx;
+  background: #FFF;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
 
-		.avatar {
-			border-radius: 100%;
-			height: 70px;
-			width: 70px;
-		}
-	}
+.imgBanner {
+  width: 100%;
+  height: 250rpx;
+  border-radius: 20rpx;
+  background: #FFF;
+}
 
-	// 已有账号，去登录的文字样式
-	.passtext {
-		display: flex;
-		justify-content: flex-end;
-		color: #FF7670;
-		margin-top: 15px;
-	}
+.registerFrom {
+  padding: 40rpx;
+}
+
+.form {
+  width: 100%;
+  background-color: #FFF;
+}
+
+.input {
+  width: 100%;
+  padding: 20rpx 0;
+}
+
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20rpx;
+}
+
+.link-text {
+  color: #007aff;
+  margin-left: 10rpx;
+}
+
+.commit {
+  margin-top: 40rpx;
+  width: 90%;
+}
 </style>
