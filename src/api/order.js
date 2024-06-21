@@ -13,7 +13,9 @@ export const getSellOrderApi = (parm) => {
     return http.post('/api/v1/goods/getSellOrder')
 }
 
-//todo 查询我的求购订单
+//查询我的订单
+// /getMyGoodsList
+// parm 商品类型：0闲置 1求购
 export const getMyOrderApi = (parm) => {
     return http.post('/api/v1/goods/replaceOrder')
 }

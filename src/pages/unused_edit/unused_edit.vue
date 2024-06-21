@@ -129,7 +129,7 @@ const getSelectList = async () => {
 
 
 //读取后端分类数据
-const getSelectList = async () => {
+const getSelectList2 = async () => {
   let res = await categoryApi()
   if (res && res.code == 200) {
     console.log(res)

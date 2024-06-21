@@ -102,7 +102,7 @@ const getSelectList = async () => {
     getSelectList()
   })
 
-}
+
 onLoad((options) => {
 	imaUrl.value = [];
 	fileList.value = [];

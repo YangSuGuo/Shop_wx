@@ -122,7 +122,7 @@
 		
 	}
 	const cancel = () =>{
-		show.value  false;
+		show.value = false;
 
 	}
 	const confirm = async () => {
