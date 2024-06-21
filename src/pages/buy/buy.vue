@@ -1,67 +1,70 @@
 <template>
-	<view class="u-wrap">
-		<u-search bg-color="#FFF" margin="8px" style="flex-grow:1;" :show-action="true" action-text="搜索"
-			:animation="true" @change="searchList" v-model="keywords"></u-search>
-	</view>
-	<view class="tab-strickt" >
-		<u-tabs :list="tabList" :is-scroll="true" active-color="#FF7670" inactive-color="#606266" name="categoryName" font-size="30"
-			v-model="current" count="cate_count" @change="change" ></u-tabs>
-	</view>
-	
-	<view class="">
-		<u-waterfall v-model="flowList" v-if="flowList.length > 0" ref="uWaterfall1">
-			<template v-slot:left="{leftList}">
-				<view class="demo-warter" v-for="(item, index) in leftList" :key="index">
-					<u-lazy-load threshold="-450" @click="toDetailPage(item)" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
-					<view class="demo-title">
-						{{item.goodsName}}
-					</view>
-					<view class="demo-price">
-						{{item.goodsPrice}}元
-					</view>
-					<view class="demo-tag">
-						<view v-if="item.type == '0'" class="demo-tag-owner">
-							闲置
-						</view>
-						<view style="margin-left: 0;" class="demo-tag-text">
-							求购
-						</view>
-					</view>
-					<!-- <view class="demo-shop">
-						{{item.shop}}
-					</view>
-					<u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)">
-					</u-icon> -->
-				</view>
-			</template>
-			<template v-slot:right="{rightList}">
-				<view class="demo-warter" v-for="(item, index) in rightList" :key="index">
-					<u-lazy-load threshold="-450" border-radius="10" @click="toDetailPage(item)" :image="item.image" :index="index"></u-lazy-load>
-					<view class="demo-title">
-						{{item.title}}
-					</view>
-					<view class="demo-price">
-						{{item.goodsPrice}}元
-					</view>
-					<view class="demo-tag">
-						<view class="demo-tag-owner">
-							闲置
-						</view>
-						<view class="demo-tag-text">
-							求购
-						</view>
-					</view>
-					<!-- <view class="demo-shop">
-						{{item.shop}}
-					</view>
-					<u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)">
-					</u-icon> -->
-				</view>
-			</template>
-		</u-waterfall>
-		<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
-	</view>
-	
+  <view class="u-wrap">
+    <u-search bg-color="#FFF" margin="8px" style="flex-grow:1;" :show-action="true" action-text="搜索"
+              :animation="true" @change="searchList" v-model="keywords"></u-search>
+  </view>
+  <view class="tab-strickt">
+    <u-tabs :list="tabList" :is-scroll="true" active-color="#FF7670" inactive-color="#606266" name="categoryName"
+            font-size="30"
+            v-model="current" count="cate_count" @change="change"></u-tabs>
+  </view>
+
+  <view class="">
+    <u-waterfall v-model="flowList" v-if="flowList.length > 0" ref="uWaterfall1">
+      <template v-slot:left="{leftList}">
+        <view class="demo-warter" v-for="(item, index) in leftList" :key="index">
+          <u-lazy-load threshold="-450" @click="toDetailPage(item)" border-radius="10" :image="item.image"
+                       :index="index"></u-lazy-load>
+          <view class="demo-title">
+            {{ item.goodsName }}
+          </view>
+          <view class="demo-price">
+            {{ item.goodsPrice }}元
+          </view>
+          <view class="demo-tag">
+            <view v-if="item.type == '0'" class="demo-tag-owner">
+              闲置
+            </view>
+            <view style="margin-left: 0;" class="demo-tag-text">
+              求购
+            </view>
+          </view>
+          <!-- <view class="demo-shop">
+            {{item.shop}}
+          </view>
+          <u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)">
+          </u-icon> -->
+        </view>
+      </template>
+      <template v-slot:right="{rightList}">
+        <view class="demo-warter" v-for="(item, index) in rightList" :key="index">
+          <u-lazy-load threshold="-450" border-radius="10" @click="toDetailPage(item)" :image="item.image"
+                       :index="index"></u-lazy-load>
+          <view class="demo-title">
+            {{ item.title }}
+          </view>
+          <view class="demo-price">
+            {{ item.goodsPrice }}元
+          </view>
+          <view class="demo-tag">
+            <view class="demo-tag-owner">
+              闲置
+            </view>
+            <view class="demo-tag-text">
+              求购
+            </view>
+          </view>
+          <!-- <view class="demo-shop">
+            {{item.shop}}
+          </view>
+          <u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)">
+          </u-icon> -->
+        </view>
+      </template>
+    </u-waterfall>
+    <u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
+  </view>
+
 </template>
 
 <script setup>
@@ -108,7 +111,7 @@
 	const pages =ref(0)
 	const flowList = ref([])
 	const uWaterfall1 =ref()
-	
+
 	const getUsedList=async()=>{
 	let res = await getWantedListApi({
 	currentPage:currentPage.value,
@@ -147,68 +150,11 @@
 			url:"../unused_detail/unused_detail?goods="+JSON.stringify(item)
 		})
 	}
-	
+
 	onReady(() =>{
 		getCateList()
 		getUsedList()
 	})
-	// const current = ref(0);
-	// const tabList = ref([{
-	// 		cate_name: '全部'
-	// 	},
-	// 	{
-	// 		cate_name: '手机'
-	// 	},
-	// 	{
-	// 		cate_name: '电脑'
-	// 	},
-	// 	{
-	// 		cate_name: '衣服'
-	// 	},{
-	// 		cate_name: '图书'
-	// 	},
-	// 	{
-	// 		cate_name: '耳机'
-	// 	},
-	// 	{
-	// 		cate_name: '手表'
-	// 	},
-	// ]);
-	// const flowList = ref([{
-	// 		price: 75,
-	// 				title:'手机',
-	// 				image:'/static/11.jpg',
-	// 			},{
-	// 				price: 385,
-	// 				title:'笔记本电脑',
-	// 				image:'/static/22.jpeg',
-	// 			},{
-	// 				price: 784,
-	// 				title:'耳机',
-	// 				image:'/static/33.jpeg',
-	// 			},{
-	// 				price: 7891,
-	// 				title:'手表',
-	// 				image:'/static/44.jpg',
-	// 			},{
-	// 				price: 2341,
-	// 				title:'养生壶',
-	// 				image:'/static/66.jpeg',
-	// 			},{
-	// 				price: 2342,
-	// 				title:'手表',
-	// 				image:'/static/55.jpg',
-	// 			},{
-	// 				price: 2341,
-	// 				title:'手机',
-	// 				image:'/static/11.jpg',
-	// 			},{
-	// 				price: 2342,
-	// 				title:'电脑',
-	// 				image:'/static/22.jpeg',
-	// 			}
-
-	// ])
 </script>
 
 <style lang="scss">
@@ -230,7 +176,7 @@
 		z-index: 99;
 		top: 0;
 		left: 0;
-		
+
 	}
 
 	.demo-warter {
