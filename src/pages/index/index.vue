@@ -11,36 +11,34 @@
     <!-- 搜索框 -->
     <view class="tab-strickt">
       <u-search bg-color="#f2f2f2" margin="8px" style="flex-grow: 1;" :show-action="true" action-text="搜索"
-                :animation="true"/>
+                :animation="true" @change="searchList" v-model="keywords"/>
     </view>
 
     <!-- 瀑布流 -->
     <view class="">
-      <u-waterfall v-model="flowList" ref="uWaterFall1">
+      <u-waterfall v-if="flowList.length > 0" v-model="flowList" ref="uWaterFall1">
         <template v-slot:left="{leftList}">
           <view class="demo-warter-left" v-for="(item, index) in leftList" :key="index">
             <u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"/>
 
             <view class="demo-title">
-              {{ item.title }}
+              {{ item.goodsName }}
             </view>
 
             <view class="demo-price">
-              {{ item.price }}元
+              {{ item.goodsPrice }}元
             </view>
 
             <view class="demo-tag">
-              <view class="demo-tag-owner">
-                自营
+              <view v-if="item.type =='0'" class="demo-tag-owner">
+                闲置
               </view>
-              <view class="demo-tag-text">
-                放心购
+              <view style="margin-left: 0;" v-else class="demo-tag-text">
+                求购
               </view>
             </view>
 
-            <view class="demo-shop">
-              {{ item.shop }}
-            </view>
+
           </view>
         </template>
         <template v-slot:right="{rightList}">
@@ -48,25 +46,23 @@
             <u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"/>
 
             <view class="demo-title">
-              {{ item.title }}
+              {{ item.goodsName }}
             </view>
 
             <view class="demo-price">
-              {{ item.price }}元
+              {{ item.goodsPrice }}元
             </view>
 
             <view class="demo-tag">
-              <view class="demo-tag-owner">
-                自营
+              <view v-if="item.type =='0'" class="demo-tag-owner">
+                闲置
               </view>
-              <view class="demo-tag-text">
-                放心购
+              <view style="margin-left: 0;" v-else class="demo-tag-text">
+                求购
               </view>
             </view>
 
-            <view class="demo-shop">
-              {{ item.shop }}
-            </view>
+
           </view>
         </template>
       </u-waterfall>
@@ -77,7 +73,9 @@
 
 <script setup>
 // 1.引入vue3中的ref模版
-import {ref} from 'vue'
+import {ref} from 'vue';
+import {getIndexListApi} from "../../api/index";
+import {onReady,onReachBottom} from "@dcloudio/uni-app";
 
 // 2.响应式数据
 const indicatorDots = ref(false) //有小圆点
@@ -99,48 +97,58 @@ const swipperList = ref([
 ])
 
 // 瀑布流
-const flowList = ref([
-  {
-    price: 75,
-    title: '手机',
-    image: '/static/Details/11.jpg',
-  },
-  {
-    price: 385,
-    title: '笔记本电脑',
-    image: '/static/Details/22.jpeg',
-  },
-  {
-    price: 784,
-    title: '耳机',
-    image: '/static/Details/33.jpeg'
-  },
-  {
-    price: 7891,
-    title: '手表',
-    image: '/static/Details/44.jpg'
-  },
-  {
-    price: 2341,
-    title: '养生壶',
-    image: '/static/Details/66.jpeg'
-  },
-  {
-    price: 2342,
-    title: '手表',
-    image: '/static/Details/55.jpg'
-  },
-  {
-    price: 2341,
-    title: '手机',
-    image: '/static/Details/11.jpg'
-  },
-  {
-    price: 2342,
-    title: '电脑',
-    image: '/static/Details/22.jpeg'
-  },
-])
+const flowList = ref([])
+
+//加载更多
+const loadStatus =ref('loadmore')
+//点击查询参数
+const currentPage =ref(1)//当前页数
+const pageSize=ref(5)//每页查询条数
+const pages=ref(0)//总页数
+const keywords =ref('')//查询关键字
+// 读取推荐到首页的商品数据
+const getIndexList=async()=> {
+  let res = await getIndexListApi({
+    currentPage: currentPage.value,
+    pageSize: pageSize.value,
+    keywords: keywords.value
+  })
+  if (res && res.code == 200) {
+    pages.value = res.data.pages//没置总页数
+    flowList.value = flowList.value.concat(res.data.records);
+    loadStatus.value = 'loadmore';
+  }
+}
+//瀑布流表单对象
+const uWaterFall1 = ref()
+//搜索功能
+const searchList = () => {
+  uWaterFall1.value.clear()//清至深布流
+  currentPage.value=1;//当前页面
+  loadstatus.value='loading' //加载更多
+  getIndexList()//根据关键字查询瀑布流
+}
+//触底加载
+onReachBottom(() =>{
+  console.log('触底加载更多')
+  //如果当前页面大于等于总页数，状态修改为没有更多就不再继续执行代码
+  if(currentPage.value >= pages.value) {
+    loadStatus.value = 'nomore';
+    return;
+  }
+  loadStatus.value = 'loading';
+  currentPage.value = ++currentPage.value
+  //修改页面后重新获取数据
+  getIndexList()
+})
+
+
+
+  onReady(()=> {
+    getIndexList()//读取首页数据
+  })
+
+
 </script>
 
 <style lang="scss">
