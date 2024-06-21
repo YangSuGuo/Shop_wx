@@ -49,6 +49,10 @@
 <script setup>
 	//引入相关函数
 	import {
+		ref,
+		reactive
+	} from 'vue';
+	import {
 		onReady,
 		onReachBottom
 	} from '@dcloudio/uni-app';
@@ -122,7 +126,7 @@
 		
 	}
 	const cancel = () =>{
-		show.value  false;
+		show.value = false;
 
 	}
 	const confirm = async () => {
