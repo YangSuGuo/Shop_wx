@@ -37,12 +37,12 @@
 		<u-popup :mask-close-able="false" border-radius="15" width="70%" height="120px" v-model="show" mode="center">
 		<view style="padding: 20px 15px 20px 65px;">
 			确定删除该商品？
-		</view>	
+		</view>
 		<view style="display: flex;justify-content: center;align-items: center;height: 50px;">
 			<u-button @click="cancel" style="margin-right: 15px;" type="info"></u-button>
 			<u-button @click="confirm" style="margin-left: 15px;" :custom-style="custonStyle" type="error">确认</u-button>
 		</view>
-			
+
 		</u-popup>
 	</view>
 </template>
@@ -52,7 +52,7 @@
 		onReady,
 		onReachBottom
 	} from '@dcloudio/uni-app';
-	
+
 	// const list = ref([{
 	// 		goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81 ae4b2f7f3bb7.jpg ',
 	// 		title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风 ',
@@ -84,8 +84,8 @@
 			list.value = list.value.concat(res.data.records)//商品数据
 		}
 	}
-	
-	
+
+
 	//加载状态
 	const loadstatus = ref('loadmore')
 	//触底加载
@@ -99,7 +99,7 @@
 			getMyUnusedList()
 
 	})
-	
+
 	//跳转到编辑商品页面
 	const editBtn = (item) => {
 		uni.navigateTo({
@@ -119,12 +119,13 @@
 		deleteId.value = item.goodsId;
 		show.value = true;
 		console.log(deleteId.value)
-		
+
 	}
 	const cancel = () =>{
 		show.value =false;
 
 	}
+
 	const confirm = async () => {
 		let res =await deleteApi({
 			goodsId: deleteId.value
