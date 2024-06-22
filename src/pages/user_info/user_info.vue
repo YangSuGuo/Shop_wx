@@ -1,32 +1,42 @@
 <template>
-  <view class="u-wrap u-p-l-20 u-p-r-20">
-    <u-form ref="form1" :model="addModel" label-width="auto">
-      <u-form-item label="昵称:" prop="nickName">
-        <u-input v-model="addModel.nickName"></u-input>
-      </u-form-item>
-      <u-form-item label="姓名:" prop="name">
-        <u-input v-model="addModel.name"></u-input>
-      </u-form-item>
-      <u-form-item label="电话:" prop="phone">
-        <u-input v-model="addModel.phone"></u-input>
-      </u-form-item>
-      <u-form-item label="图片:" prop="picture"></u-form-item>
-      <u-upload ref="imgRef" :action="action" :file-list="fileList" max-count="1" @on-remove="onRemove"
-                @on-change="onChange"></u-upload>
-    </u-form>
-    <u-button type="success" @click="commit">确认修改</u-button>
+  <view class="Login">
+    <view class="container">
+      <image class="imgBanner"
+             src="https://img.picui.cn/free/2024/06/22/6676780da7a10.png"/>
+
+      <view class="registerFrom">
+        <u-form ref="form1" :error-type="['border-bottom']" :model="addModel" class="form">
+          <u-form-item class="input" prop="nickName">
+            <u-input v-model="addModel.nickName" clearable placeholder="昵称"
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item class="input" prop="name">
+            <u-input v-model="addModel.name" clearable placeholder="姓名"
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item class="input" prop="phone">
+            <u-input v-model="addModel.phone" clearable placeholder="电话" prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item label="头像:" class="input" prop="picture"/>
+          <u-upload ref="imgRef" :action="action"
+                    :file-list="fileList" max-count="1" @on-remove="onRemove"
+                    @on-change="onChange"/>
+
+          <view style="margin-top: 40rpx"/>
+          <u-button style="width: 90%" type="primary" @click="commit">确认修改</u-button>
+        </u-form>
+      </view>
+    </view>
   </view>
 </template>
 
-<script>
+<script setup>
 import {reactive, ref} from 'vue';
 import {onLoad, onReady} from '@dcloudio/uni-app';
 import {editInfoApi} from '../../api/user.js'
 
 import http from '../../common/http.js'
 
-
-const imgRef = ref()
 const addModel = reactive({
   userId: uni.getStorageSync("userId"),
   nickName: '',
@@ -35,42 +45,34 @@ const addModel = reactive({
   picture: ''
 })
 
+//图片上传触发
+const imgRef = ref()
 const fileList = ref([])
-//存储图片路径
 const imgUrl = ref([])
 const action = ref(http.baseUrl + "/api/upload/uploadImage")
-//图片上传触发
-const onchange = (res, index, lists, name) => {
+const onChange = (res, index, lists, name) => {
   console.log(res.data)
   let result = JSON.parse(res.data)
-
-  //把返回的图片放在imgurl
   imgUrl.value.push(http.baseUrl + result.data)
-  //把数组里的图片转化为逗号分隔的字符串的一行数据
   let url = ''
   for (let k = 0; k < imgUrl.value.length; k++) {
     url = url + imgUrl.value[k] + ','
   }
-
-  //去掉末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
 
 //删除图片
 const onRemove = (index) => {
-  //删除图片
   imgUrl.value.splice(index, 1)
   let url = ''
   for (let k = 0; k < imgUrl.value.length; k++) {
     url = url + imgUrl.value[k] + ','
   }
-  //去除末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
 
-//表单对象
+//表单提交
 const form1 = ref('')
-//表单验证
 const rules = reactive({
   nickName: [{
     required: true,
@@ -86,21 +88,13 @@ const rules = reactive({
     required: true,
     message: "请填写电话",
     trigger: ['change']
-  }],
-  picture: [{
-    required: true,
-    message: "请上传头像",
-    trigger: ['change'],
-    type: 'number',
   }]
 })
-//表单提交
 const commit = () => {
   form1.value.validate(async (valid) => {
     if (valid) {
       let res = await editInfoApi(addModel)
       if (ref && res.code == 200) {
-        关闭网页
         uni.navigateBack({
           delta: 1
         })
@@ -109,11 +103,11 @@ const commit = () => {
   })
 }
 
-
 onReady(() => {
   form1.value.setRules(rules);
   imgRef.value.lists = fileList.value
 })
+
 onLoad((options) => {
   console.log("-------")
   console.log(options)
@@ -135,8 +129,43 @@ onLoad((options) => {
     }
   }
 })
+
 </script>
 
-<style>
+<style scoped>
+.Login {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
 
+.container {
+  width: 95%;
+  margin-top: 80rpx;
+  background: #FFF;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.imgBanner {
+  width: 100%;
+  height: 250rpx;
+  border-radius: 20rpx;
+  background: #FFF;
+}
+
+.registerFrom {
+  padding: 40rpx;
+}
+
+.form {
+  width: 100%;
+  background-color: #FFF;
+}
+
+.input {
+  width: 100%;
+  padding: 20rpx 0;
+}
 </style>
