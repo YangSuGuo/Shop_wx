@@ -3,28 +3,32 @@
     <view v-for="(item, index) in list" :key="item.goodsId" class="order">
       <view class="top">
         <view class="left">
-          <u-icon :size="30" color="rgb(94,94,94)" name="home">
-          </u-icon>
+          <u-icon :size="30" color="rgb(94,94,94)" name="home"/>
           <view class="store">{{ item.goodsName }}</view>
-          <u-icon :size="26" color="rgb(203,203,203)" name="arrow-right"></u-icon>
+          <u-icon :size="26" color="rgb(203,203,203)" name="arrow-right"/>
         </view>
       </view>
+
       <view class="item">
+
         <view class="left">
           <image :src="item.image.split(',')[0]" mode="aspectFill"></image>
         </view>
+
         <view class="content">
           <view class="title u-line-2">{{ item.goodsDesc }}</view>
           <view class="type">{{ item.address }}</view>
           <view class="delivery-time">发货时间 {{ item.createTime }}</view>
         </view>
+
         <view class="right">
           <view class="price">
-            ￥{{ item.goodsPrice }}元
+            ￥{{ item.goodsPrice }} 元
           </view>
           <view class="number">x1</view>
         </view>
       </view>
+
       <view class="bottom">
         <view class="logistics btn" @click="lookBtn(item)">查看</view>
         <view class="exchange btn">下架</view>
@@ -32,57 +36,52 @@
         <view class="evaluate btn" @click="deleteBtn(item)">删除</view>
       </view>
     </view>
-    <u-loadmore :status="loadstatus" bgColor="#f2f2f2"></u-loadmore>
+
+    <u-loadmore :status="loadstatus" bgColor="#f2f2f2"/>
     <!-- 删除弹窗 -->
     <u-popup v-model="show" :mask-close-able="false" border-radius="15" height="120px" mode="center" width="70%">
       <view style="padding: 20px 15px 20px 65px;">
         确定删除该商品？
       </view>
       <view style="display: flex;justify-content: center;align-items: center;height: 50px;">
-        <u-button style="margin-right: 15px;" type="info" @click="cancel"></u-button>
-        <u-button :custom-style="custonStyle" style="margin-left: 15px;" type="error" @click="confirm">确认</u-button>
+        <u-button style="margin-right: 15px;" type="info" @click="cancel">取消</u-button>
+        <u-button :custom-style="custonStyle"
+                  style="margin-left: 15px;"
+                  type="error" @click="confirm">确认
+        </u-button>
       </view>
-
     </u-popup>
   </view>
 </template>
+
 <script setup>
 //引入相关函数
 import {ref} from 'vue';
 import {onReachBottom, onReady} from '@dcloudio/uni-app';
+import {getMyGoodsListApi} from "../../api/goods";
 
-// const list = ref([{
-// 		goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81 ae4b2f7f3bb7.jpg ',
-// 		title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风 ',
-// 		type: '灰色;M',
-// 		deliveryTime: '付款后30天内发货',
-// 		price: '348.58',
-// 		number: 2,
-// 		goodsId: '1',
-// 		goodsName: '2020冬装新款小清新宽松软糯毛衣外套'
-// 	},
-// 	{
-// 		goodsUrl: '//img12.360buyimg.com/n7/jfs/t1/102191/19/9072/330688/5e0af7cfE17698872/c91c00d713bf729a.jpg ',
-// 		title: '【葡萄藤】现货小清新学院风制服格裙百褶裙女短款百搭日系甜美风原创jk制服女2020 新款 ',
-// 		type: '45cm;S',
-// 		deliveryTime: '付款后30天内发货',
-// 		price: '135.00',
-// 		number: 1,
-// 		goodsId: '2',
-// 		goodsName: '【葡萄藤】现货小清新学院风制服格裙百褶裙'
-// 	}
-// ])
+const list = ref([])
 //总页数
 const pages = ref(0)
+
+const currentPage = ref(1)
+const pageSize = ref(5)
+const parm = {
+  userId: uni.getStorageSync("userId"),
+  type: 0,
+  currentPage: currentPage.value,
+  pageSize: pageSize.value,
+}
+
 //获取列表数据
 const getMyUnusedList = async () => {
-  let res = await getMyUnusedListApi(parm)
+  let res = await getMyGoodsListApi(parm)
   if (res && res.code == 200) {
+    console.log(res)
     pages.value = res.data.pages;
     list.value = list.value.concat(res.data.records)//商品数据
   }
 }
-
 
 //加载状态
 const loadstatus = ref('loadmore')
@@ -110,6 +109,7 @@ const lookBtn = (item) => {
     url: "../look_my_unused/look_my_unused?goods=" + JSON.stringify(item)
   })
 }
+
 //删除
 const deleteId = ref('')
 const show = ref(false)
@@ -119,10 +119,11 @@ const deleteBtn = (item) => {
   console.log(deleteId.value)
 
 }
+
 const cancel = () => {
   show.value = false;
-
 }
+
 const confirm = async () => {
   let res = await deleteApi({
     goodsId: deleteId.value
@@ -137,9 +138,9 @@ const confirm = async () => {
 }
 onReady(() => {
   getMyUnusedList()
-  //工单1302
 })
 </script>
+
 <style lang="scss">
 .order {
   width: 710rpx;
@@ -185,6 +186,8 @@ onReady(() => {
     }
 
     .content {
+      flex-grow: 1;
+
       .title {
         font-size: 28rpx;
         line-height: 50rpx;
@@ -206,6 +209,12 @@ onReady(() => {
       margin-left: 10rpx;
       padding-top: 20rpx;
       text-align: right;
+
+      .price {
+        width: 150rpx;
+        color: #D85283;
+        text-wrap: none;
+      }
 
       .decimal {
         font-size: 24rpx;
@@ -230,11 +239,12 @@ onReady(() => {
   }
 
   .bottom {
+    width: 100%;
     display: flex;
     margin-top: 40rpx;
-    padding: 0 10rpx;
+
     justify-content: space-between;
-    align-items: center;
+    align-content: space-between;
 
     .btn {
       line-height: 52rpx;
@@ -244,7 +254,6 @@ onReady(() => {
       font-size: 26rpx;
       text-align: center;
       color: $u-type-info-dark;
-      margin-right: 10px;
     }
 
     .evaluate {
