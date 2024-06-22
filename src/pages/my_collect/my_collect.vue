@@ -64,7 +64,7 @@ const status = ref('loadmore')
 const pages = ref(0)
 //获取订单列表数据
 const getMyOrder = async () => {
-  let ret = await getMyOrderApi(parm)
+  let res = await getMyOrderApi(parm)
   if (res && res.code == 200) {
     console.log(res)
     if (res.data.records.length == 0) {

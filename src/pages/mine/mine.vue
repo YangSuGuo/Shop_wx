@@ -55,7 +55,7 @@ const toMyBuy = () => {
 //我的收藏
 const toMyCollect = () => {
   uni.navigateTo({
-    url: "../my_collect/my_coollect"
+    url: "../my_collect/my_collect"
   })
 }
 //购买订单
