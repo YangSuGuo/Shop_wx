@@ -6,20 +6,21 @@
       <view style="padding: 20rpx">
         <u-form ref="form1" :model="addModel">
           <u-form-item label-width="150rpx" prop="name">
-            <u-subsection v-model="addModel.name" :list="list" @change="radioChange"/>
+            <u-subsection v-model="addModel.type" :list="list" />
           </u-form-item>
           <u-form-item prop="goodsName">
             <u-input v-model="addModel.title" clearable placeholder="请输入名称" prefixIconStyle="font-size: 22px;color: #909399"
                      trim/>
+
           </u-form-item>
-          <u-form-item prop="categoryId">
-            <u-input v-model="addModel.categoryId" clearable placeholder="请选择分类" prefixIconStyle="font-size: 22px;color: #909399"
-                     trim
-                     type="select"
-                     @click="openSelect()"/>
+
+          <u-form-item prop="categoryName">
+            <u-input v-model="addModel.categoryName"  placeholder="请选择分类"  @click="openSelect"/>
+            <u-select @confirm="selectConfirm" v-model="show1" :list="selectList"></u-select>
+
           </u-form-item>
           <u-form-item prop="goodsDesc">
-            <u-input v-model="addModel.introduce" clearable placeholder="请输入简介" prefixIconStyle="font-size: 22px;color: #909399"
+            <u-input v-model="addModel.goodsDesc" clearable placeholder="请输入简介" prefixIconStyle="font-size: 22px;color: #909399"
                      trim/>
           </u-form-item>
           <u-form-item prop="goodsPrice">
@@ -45,7 +46,6 @@
           <u-form-item prop="image"/>
           <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"/>
         </u-form>
-        <u-select v-model="show" :list="selectList" @confirm=""/>
         <u-button :custom-style="customStyle" @click="commit">发布</u-button>
       </view>
     </view>
@@ -59,6 +59,7 @@ import UInput from "../../uni_modules/vk-uview-ui/components/u-input/u-input.vue
 import {categoryApi, releaseApi} from "../../api/goods.js";
 import {onReady} from "@dcloudio/uni-app";
 import http from '../../common/http.js'
+import USelect from "../../uni_modules/vk-uview-ui/components/u-select/u-select.vue";
 
 // 表单数据
 const addModel = reactive({
@@ -104,26 +105,27 @@ const customStyle = reactive({
 })
 
 //下拉菜单显示
-const show = ref(false)
+const show1 = ref(false)
 const openSelect = () => {
-  show.value = true;
+  console.log(1)
+  show1.value = true;
 }
 
 //分类数据
 const selectList = ref([])
 const getSelectList = async () => {
   let res = await categoryApi()
-  if (res && res.code == 200) {
+  if (res && res.code === 200) {
     console.log(res)
     selectList.value = res.data;
   }
 }
 
-//选择分类
-const selectConfirm = (e) => {
+
+function selectConfirm  (e)  {
   console.log(e)
   addModel.categoryName = e[0].label;
-  addModel.categoryId = e[0].label;
+  addModel.categoryId = e[0].value;
 }
 
 //生命周期函数
@@ -157,14 +159,13 @@ const onRemove = (index) => {
 }
 
 //闲置 求购类型选择
-const radioChange = (e) => {
-  console.log(e)
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].name == e) {
-      addModel.type = list[i].value;
-    }
-  }
-}
+// const radioChange = (e) => {
+//   console.log(e)
+//   for (let i = 0; i < list.length; i++) {
+//       addModel.type = list[i].value;
+//       console.log(list[i].value)
+//   }
+// }
 
 //获取表单
 const form1 = ref()
@@ -218,8 +219,9 @@ const rules = reactive({
 const commit = () => {
   form1.value.validate(async (valid) => {
     if (valid) {
+
       let res = await releaseApi(addModel)
-      if (res && res.code == 200) {
+      if (res && res.code === 200) {
         uni.showToast({
           title: '发布成功',
           duration: 2000,
