@@ -144,15 +144,6 @@
             
         }
         ,{
-            "path" : "pages/look_my_unused/look_my_unused",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "查看闲置",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/user_info/user_info",
             "style" :                                                                                    
             {
