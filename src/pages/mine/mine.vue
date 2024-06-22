@@ -4,14 +4,14 @@
       <view class="u-m-r-10">
         <!-- 未设置头像，则显示默认图片 -->
         <u-avatar v-if="picture" :src="picture" size="100"/>
-        <u-avatar v-else src="/static/Login/user.png" size="100"/>
+        <u-avatar v-else size="100" src="/static/Login/user.png"/>
       </view>
       <view class="u-flex-1">
-        <view class="u-font-18 u-p-b-20" v-if="nickName">{{ nickName }}</view>
-        <view class="u-font-18 u-p-b-20" v-else>{{ nickName }}</view>
+        <view v-if="nickName" class="u-font-18 u-p-b-20">{{ nickName }}</view>
+        <view v-else class="u-font-18 u-p-b-20">{{ nickName }}</view>
       </view>
       <view class="u-m-l-10 u-p-10">
-        <u-icon name="arrow-right" color="#969799" size="28"></u-icon>
+        <u-icon color="#969799" name="arrow-right" size="28"></u-icon>
       </view>
     </view>
     <view class="u-m-t-20">

@@ -1,8 +1,8 @@
 <template>
   <view style="overflow-y: auto;">
     <!-- 轮播图 -->
-    <u-swiper name="image" border-radius='1' :duration='duration' :interval='interval' :height="height"
-              :list="swipperList"/>
+    <u-swiper :duration='duration' :height="height" :interval='interval' :list="swipperList" border-radius='1'
+              name="image"/>
 
     <!-- 标题 -->
     <view class="header">
@@ -11,8 +11,8 @@
     </view>
 
     <view class="info-fa" style="margin-left: 20rpx; margin-bottom: 20rpx">
-      <u-tag text="自提" mode="light" style="margin-right: 8rpx" type="error"/>
-      <u-tag text="送货上门" mode="light" type="error"/>
+      <u-tag mode="light" style="margin-right: 8rpx" text="自提" type="error"/>
+      <u-tag mode="light" text="送货上门" type="error"/>
     </view>
 
     <!-- 商品简介 -->
@@ -41,12 +41,12 @@
 
     <view class="info">
       <u-steps
-          active-color="#FF7660"
-          un-active-color="#606266"
-          style="width: 100%; margin-top: 20rpx"
-          mode="dot"
+          :current="0"
           :list="numlist"
-          :current="0"/>
+          active-color="#FF7660"
+          mode="dot"
+          style="width: 100%; margin-top: 20rpx"
+          un-active-color="#606266"/>
     </view>
 
     <view class="info-fa">
@@ -74,39 +74,39 @@
   <view class="navigation">
     <view class="left">
       <view class="item">
-        <u-icon name="home" :size="40"/>
+        <u-icon :size="40" name="home"/>
         <view class="text u-line-1" @click="toIndex">首页</view>
       </view>
 
       <view class="item">
-        <u-icon name="star" :size="40"/>
+        <u-icon :size="40" name="star"/>
         <view class="text u-line-1"> 收藏</view>
       </view>
 
       <view class="item car" @click="toRepory">
-        <u-icon name="info-circle" :size="40"/>
+        <u-icon :size="40" name="info-circle"/>
         <view class="text u-line-1"> 举报</view>
       </view>
     </view>
 
     <view class="right">
       <u-button
-          type="warning"
+          :ripple="true"
           shape="circle"
           size="mini"
-          :ripple="true"
-          @click="callPhone"
           style="margin-right: 20rpx"
+          type="warning"
+          @click="callPhone"
       >
         电话咨询
       </u-button>
       <u-button
-          type="error"
+          :ripple="true"
           shape="circle"
           size="mini"
-          :ripple="true"
-          @click="toBuy"
           style="margin-right: 20rpx"
+          type="error"
+          @click="toBuy"
       >
         立即交易
       </u-button>
@@ -115,31 +115,31 @@
   </view>
 
   <!-- 立刻交易 -->
-  <u-popup :mask-close-able="false" border-radius="15" width="85%" height="200px" v-model="show" mode="center">
+  <u-popup v-model="show" :mask-close-able="false" border-radius="15" height="200px" mode="center" width="85%">
     <view style="padding: 50px 15px 30px 15px;">
-      <u-form label-width="auto" :model="addModel" ref="form1">
+      <u-form ref="form1" :model="addModel" label-width="auto">
         <u-form-item label="请输入金额" prop="price">
           <u-input v-model="addModel.price"/>
         </u-form-item>
       </u-form>
     </view>
     <view class="conBtn">
-      <u-button @click="cancel" style="margin-right: 15px;" type="info">取消交易</u-button>
-      <u-button @click="confirm" style="margin-left: 15px;" :custom-style="customStyle" type="error">确认交易</u-button>
+      <u-button style="margin-right: 15px;" type="info" @click="cancel">取消交易</u-button>
+      <u-button :custom-style="customStyle" style="margin-left: 15px;" type="error" @click="confirm">确认交易</u-button>
     </view>
   </u-popup>
   <!-- 举报 -->
-  <u-popup :mask-close-able="false" border-radius="15" width="85%" height="200px" v-model="reportShow" mode="center">
+  <u-popup v-model="reportShow" :mask-close-able="false" border-radius="15" height="200px" mode="center" width="85%">
     <view style="padding: 50px 15px 30px 15px;">
-      <u-form label-width="auto" :model="reportModel" ref="form1">
+      <u-form ref="form1" :model="reportModel" label-width="auto">
         <u-form-item label="请输入举报原因" prop="reason">
           <u-input v-model="addModel.reason"></u-input>
         </u-form-item>
       </u-form>
     </view>
     <view class="conBtn">
-      <u-button @click="reportCancel" style="margin-right: 15px;" type="info">取消举报</u-button>
-      <u-button @click="reportConfirm" style="margin-left: 15px;" :custom-style="customStyle" type="error">确认举报
+      <u-button style="margin-right: 15px;" type="info" @click="reportCancel">取消举报</u-button>
+      <u-button :custom-style="customStyle" style="margin-left: 15px;" type="error" @click="reportConfirm">确认举报
       </u-button>
     </view>
   </u-popup>
@@ -152,8 +152,6 @@ import {onLoad} from '@dcloudio/uni-app';
 import {replaceOrderApi} from "../../api/order";
 //轮播图高度
 const height = ref('350')
-const indicatorDots = ref(true)
-const autoplay = ref(2000)
 const interval = ref(2000)
 const duration = ref(500)
 const swipperList = ref([])
@@ -172,7 +170,6 @@ const numlist = ref([
   {
     name: '交易完成'
   }])
-
 const goodsId = ref('')
 const goodsName = ref('')
 const goodsPrice = ref('')

@@ -1,10 +1,12 @@
 <template>
   <view class="u-wrap u-p-1-20 u-p-r-20">
     <u-form ref="form1" :model="addModel">
-      <u-form-item label="类型:" prop="name" label-width="
-150rpx"><u-radio-group v-model="addModel.name">
-          <u-radio @change="radioChange" v-for="(item, index) in list" :key="index" :disabled="item.disabled" :name="item.name"
-                   activeColor="#00cc33">
+      <u-form-item label="类型:" label-width="
+150rpx" prop="name">
+        <u-radio-group v-model="addModel.name">
+          <u-radio v-for="(item, index) in list" :key="index" :disabled="item.disabled" :name="item.name"
+                   activeColor="#00cc33"
+                   @change="radioChange">
             {{ item.name }}
           </u-radio>
         </u-radio-group>
@@ -42,7 +44,7 @@ import {reactive, ref} from 'vue';
 import UFormItem from "../../uni_modules/vk-uview-ui/components/u-form-item/u-form-item.vue";
 import UInput from "../../uni_modules/vk-uview-ui/components/u-input/u-input.vue";
 //引入后端api
-import {categoryApi, releaseApi} from "../../api/goods.js";
+import {categoryApi} from "../../api/goods.js";
 //引入onReady生命周期函数 页面渲染时读后端数据
 import {onReady} from "@dcloudio/uni-app";
 //引入http请求文件
@@ -111,21 +113,20 @@ const openSelect = () => {
 const cageId = ref('')
 const selectList = ref([])
 const getSelectList = async () => {
-	let res = await categoryApi()
-	if(res && res.code == 200){
-		console.log(res)
-		selectList.value = res.data;
-		//设置分类
-		if(cageId.value){
-			for(let k=0;k<selectList.value.length;k++){
-				if(selectList.value[k].value == cageId.value){
-					addModel.categoryName = selectList.VALUE[K].label;
-				}
-			}
-		}
-	}
+  let res = await categoryApi()
+  if (res && res.code == 200) {
+    console.log(res)
+    selectList.value = res.data;
+    //设置分类
+    if (cageId.value) {
+      for (let k = 0; k < selectList.value.length; k++) {
+        if (selectList.value[k].value == cageId.value) {
+          addModel.categoryName = selectList.VALUE[K].label;
+        }
+      }
+    }
+  }
 }
-
 
 
 //读取后端分类数据
@@ -215,7 +216,7 @@ const rules = reactive({
     required: true,
     message: "请选择价格",
     trigger: ['change', 'blur'],
-	type: 'number',
+    type: 'number',
   }],
   userName: [{
     required: true,
@@ -242,22 +243,22 @@ const rules = reactive({
 //提交表单
 const commit = () => {
   form1.value.validate(async (valid) => {
-	  console.log(addModel)
-    if(valid) {
+    console.log(addModel)
+    if (valid) {
       let res = await editApi(addModel)
       if (res && res.code == 200) {
-		  console.log(res)
-      uni.navigateTo({
-      	url:'../my_unused/my_unused'
-      })
+        console.log(res)
+        uni.navigateTo({
+          url: '../my_unused/my_unused'
+        })
 
         //清空数据
         form1.value.resetField();
         imgUrl.value = [];
         addModel.image = '';
-		fileList.value = []
+        fileList.value = []
         imgRef.value.clear();
-    
+
       }
     }
   })
@@ -272,23 +273,23 @@ const commit = () => {
 
 }
 onLoad((options) => {
-	imaUrl.value = [];
-	fileList.value = [];
+  imaUrl.value = [];
+  fileList.value = [];
   const goods = JSON.parse(options.goods)
   cageId.value = goods.categoryId;
   //回显数据
- addModel.goodsId = goods.goodsId;
- addModel.categoryId = goods.categoryId;
- addModel.image = goods.image;
- //图片回显
+  addModel.goodsId = goods.goodsId;
+  addModel.categoryId = goods.categoryId;
+  addModel.image = goods.image;
+  //图片回显
   if (goods.image) {
     let imgs = goods.image.split(",")
-	for(let g=0;g<imgs.length;g++){
-		imgUrl.value.push(imgs[g]);
-		let obj = {url:''}
-		obj.url = imgs[g]
-		fileList.value.push(obj)
-	}
+    for (let g = 0; g < imgs.length; g++) {
+      imgUrl.value.push(imgs[g]);
+      let obj = {url: ''}
+      obj.url = imgs[g]
+      fileList.value.push(obj)
+    }
   }
   addModel.goodsName = goods.goodsName;
   addModel.goodsDesc = goods.goodsDesc;
@@ -299,11 +300,11 @@ onLoad((options) => {
   addModel.type = goods.type;
   addModel.wxNum = goods.wxNum;
 //回显商品类型
-for(let i=0;i<list.length;i++){
-	if(list[i].value == goods.type){
-		addModel.name = list[i].name;
-	}
-}
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].value == goods.type) {
+      addModel.name = list[i].name;
+    }
+  }
 })
 
 </script>

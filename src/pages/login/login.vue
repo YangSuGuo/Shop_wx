@@ -3,7 +3,7 @@
     <view class="container">
       <image class="imgBanner"
              src="https://img.picui.cn/free/2024/06/21/6675809ef1f73.png"/>
-      <view class="form" :model="loginModel" ref="form1">
+      <view ref="form1" :model="loginModel" class="form">
         <view class="input">
           <u-input v-model="loginModel.username" clearable placeholder="请输入用户名"
                    prefixIconStyle="font-size: 22px;color: #909399"/>

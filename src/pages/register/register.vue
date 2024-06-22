@@ -5,22 +5,22 @@
              src="https://img.picui.cn/free/2024/06/21/6675809ef1f73.png"/>
 
       <view class="registerFrom">
-        <u-form class="form" :model="loginModel" ref="form1" :error-type="['border-bottom']">
-          <u-form-item prop="phone" class="input">
+        <u-form ref="form1" :error-type="['border-bottom']" :model="loginModel" class="form">
+          <u-form-item class="input" prop="phone">
             <u-input v-model="loginModel.phone" clearable placeholder="请输入电话"
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
-          <u-form-item prop="username" class="input">
+          <u-form-item class="input" prop="username">
             <u-input v-model="loginModel.username" clearable placeholder="请输入账户"
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
-          <u-form-item prop="password" class="input">
-            <u-input v-model="loginModel.password" clearable placeholder="请输入密码" type="password"
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          <u-form-item class="input" prop="password">
+            <u-input v-model="loginModel.password" clearable placeholder="请输入密码" prefixIconStyle="font-size: 22px;color: #909399"
+                     type="password"/>
           </u-form-item>
-          <u-form-item prop="passwordConfirm" class="input">
-            <u-input v-model="loginModel.passwordConfirm" clearable placeholder="请输入确定密码" type="password"
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          <u-form-item class="input" prop="passwordConfirm">
+            <u-input v-model="loginModel.passwordConfirm" clearable placeholder="请输入确定密码" prefixIconStyle="font-size: 22px;color: #909399"
+                     type="password"/>
           </u-form-item>
           <view style="margin-top: 40rpx"/>
           <u-button style="width: 90%" type="primary" @click="commit">注册</u-button>

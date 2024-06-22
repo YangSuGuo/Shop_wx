@@ -1,22 +1,22 @@
 <template>
 
   <view class="u-wrap">
-    <u-search bg-color="#FFF" margin="8px" style="flex-grow:1;" :show-action="true" action-text="搜索"
-              :animation="true" @change="searchList" v-model="keywords"></u-search>
+    <u-search v-model="keywords" :animation="true" :show-action="true" action-text="搜索" bg-color="#FFF"
+              margin="8px" style="flex-grow:1;" @change="searchList"></u-search>
   </view>
 
   <view class="tab-strickt">
-    <u-tabs :list="tabList" :is-scroll="true" active-color="#FF7670" inactive-color="#606266" name="categoryName"
+    <u-tabs v-model="current" :is-scroll="true" :list="tabList" active-color="#FF7670" count="cate_count"
             font-size="30"
-            v-model="current" count="cate_count" @change="change"></u-tabs>
+            inactive-color="#606266" name="categoryName" @change="change"></u-tabs>
   </view>
 
   <view class="">
-    <u-waterfall v-model="flowList" v-if="flowList.length > 0" ref="uWaterfall1">
+    <u-waterfall v-if="flowList.length > 0" ref="uWaterfall1" v-model="flowList">
       <template v-slot:left="{leftList}">
-        <view class="demo-warter" v-for="(item, index) in leftList" :key="index">
-          <u-lazy-load threshold="-450" @click="toDetailPage(item)" border-radius="10" :image="item.image"
-                       :index="index"/>
+        <view v-for="(item, index) in leftList" :key="index" class="demo-warter">
+          <u-lazy-load :image="item.image" :index="index" border-radius="10" threshold="-450"
+                       @click="toDetailPage(item)"/>
           <view class="demo-title">
             {{ item.goodsName }}
           </view>
@@ -27,16 +27,16 @@
             <view v-if="item.type == '0'" class="demo-tag-owner">
               闲置
             </view>
-            <view v-if="item.type == '1'" style="margin-left: 0;" class="demo-tag-text">
+            <view v-if="item.type == '1'" class="demo-tag-text" style="margin-left: 0;">
               求购
             </view>
           </view>
         </view>
       </template>
       <template v-slot:right="{rightList}">
-        <view class="demo-warter" v-for="(item, index) in rightList" :key="index">
-          <u-lazy-load threshold="-450" border-radius="10" @click="toDetailPage(item)" :image="item.image"
-                       :index="index"/>
+        <view v-for="(item, index) in rightList" :key="index" class="demo-warter">
+          <u-lazy-load :image="item.image" :index="index" border-radius="10" threshold="-450"
+                       @click="toDetailPage(item)"/>
           <view class="demo-title">
             {{ item.title }}
           </view>
@@ -54,7 +54,7 @@
         </view>
       </template>
     </u-waterfall>
-    <u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
+    <u-loadmore :status="loadStatus" bg-color="rgb(240, 240, 240)" @loadmore="addRandomData"></u-loadmore>
   </view>
 
 </template>

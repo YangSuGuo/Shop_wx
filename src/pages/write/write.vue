@@ -5,42 +5,42 @@
              src="https://img.picui.cn/free/2024/06/21/6675809ef1f73.png"/>
       <view style="padding: 20rpx">
         <u-form ref="form1" :model="addModel">
-          <u-form-item prop="name" label-width="150rpx">
-            <u-subsection :list="list" v-model="addModel.name" @change="radioChange"/>
+          <u-form-item label-width="150rpx" prop="name">
+            <u-subsection v-model="addModel.name" :list="list" @change="radioChange"/>
           </u-form-item>
           <u-form-item prop="goodsName">
-            <u-input v-model="addModel.title" placeholder="请输入名称" clearable trim
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.title" clearable placeholder="请输入名称" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
           </u-form-item>
           <u-form-item prop="categoryId">
-            <u-input v-model="addModel.categoryId" placeholder="请选择分类" clearable trim
+            <u-input v-model="addModel.categoryId" clearable placeholder="请选择分类" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim
                      type="select"
-                     @click="openSelect()"
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+                     @click="openSelect()"/>
           </u-form-item>
           <u-form-item prop="goodsDesc">
-            <u-input v-model="addModel.introduce" placeholder="请输入简介" clearable trim
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.introduce" clearable placeholder="请输入简介" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
           </u-form-item>
           <u-form-item prop="goodsPrice">
-            <u-input v-model="addModel.price" placeholder="请输入价格" clearable trim maxlength=8
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.price" clearable maxlength=8 placeholder="请输入价格" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
           </u-form-item>
           <u-form-item label-width="auto" prop="userName">
-            <u-input v-model="addModel.userName" placeholder="请输入联系人" clearable trim
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.userName" clearable placeholder="请输入联系人" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
           </u-form-item>
           <u-form-item label-width="auto" prop="phone">
-            <u-input v-model="addModel.phone" placeholder="请输入联系电话" clearable trim maxlength=11
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.phone" clearable maxlength=11 placeholder="请输入联系电话" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
           </u-form-item>
           <u-form-item label-width="auto" prop="wxNum">
-            <u-input v-model="addModel.wxNum" placeholder="请输入微信号" clearable trim
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.wxNum" clearable placeholder="请输入微信号" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
           </u-form-item>
           <u-form-item label-width="auto" prop="address">
-            <u-input v-model="addModel.address" placeholder="请输入联系地址" clearable trim
-                     prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.address" clearable placeholder="请输入联系地址" prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
           </u-form-item>
           <u-form-item prop="image"/>
           <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"/>
@@ -241,7 +241,7 @@ const commit = () => {
         imgUrl.value = [];
         addModel.image = '';
         imgRef.value.clear();
-        return
+
       }
     }
   })

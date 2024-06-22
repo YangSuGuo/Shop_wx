@@ -1,25 +1,25 @@
 <template>
   <!-- 	轮播图 -->
   <view class="u-wrap">
-    <swiper class="swipper-container" circular :indicator-dots="indicatorDots"
-            :autoplay="autoplay" :interval="interval" :duration="duration">
+    <swiper :autoplay="autoplay" :duration="duration" :indicator-dots="indicatorDots"
+            :interval="interval" circular class="swipper-container">
       <swiper-item v-for="(item) in swipperList">
-        <image class="imgs" :src="item.image" mode="aspectFill"></image>
+        <image :src="item.image" class="imgs" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
 
     <!-- 搜索框 -->
     <view class="tab-strickt">
-      <u-search bg-color="#f2f2f2" margin="8px" style="flex-grow: 1;" :show-action="true" action-text="搜索"
-                :animation="true" @change="searchList" v-model="keywords"/>
+      <u-search v-model="keywords" :animation="true" :show-action="true" action-text="搜索" bg-color="#f2f2f2"
+                margin="8px" style="flex-grow: 1;" @change="searchList"/>
     </view>
 
     <!-- 瀑布流 -->
     <view class="">
-      <u-waterfall v-if="flowList.length > 0" v-model="flowList" ref="uWaterFall1">
+      <u-waterfall v-if="flowList.length > 0" ref="uWaterFall1" v-model="flowList">
         <template v-slot:left="{leftList}">
-          <view class="demo-warter-left" v-for="(item, index) in leftList" :key="index">
-            <u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"/>
+          <view v-for="(item, index) in leftList" :key="index" class="demo-warter-left">
+            <u-lazy-load :image="item.image" :index="index" border-radius="10" threshold="-450"/>
 
             <view class="demo-title">
               {{ item.goodsName }}
@@ -33,7 +33,7 @@
               <view v-if="item.type =='0'" class="demo-tag-owner">
                 闲置
               </view>
-              <view style="margin-left: 0;" v-else class="demo-tag-text">
+              <view v-else class="demo-tag-text" style="margin-left: 0;">
                 求购
               </view>
             </view>
@@ -42,8 +42,8 @@
           </view>
         </template>
         <template v-slot:right="{rightList}">
-          <view class="demo-warter-right" v-for="(item, index) in rightList" :key="index">
-            <u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"/>
+          <view v-for="(item, index) in rightList" :key="index" class="demo-warter-right">
+            <u-lazy-load :image="item.image" :index="index" border-radius="10" threshold="-450"/>
 
             <view class="demo-title">
               {{ item.goodsName }}
@@ -57,16 +57,15 @@
               <view v-if="item.type =='0'" class="demo-tag-owner">
                 闲置
               </view>
-              <view style="margin-left: 0;" v-else class="demo-tag-text">
+              <view v-else class="demo-tag-text" style="margin-left: 0;">
                 求购
               </view>
             </view>
 
-
           </view>
         </template>
       </u-waterfall>
-      <u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
+      <u-loadmore :status="loadStatus" bg-color="rgb(240, 240, 240)" @loadmore="addRandomData"></u-loadmore>
     </view>
   </view>
 </template>
@@ -124,7 +123,7 @@ const uWaterFall1 = ref()
 const searchList = () => {
   uWaterFall1.value.clear()//清至深布流
   currentPage.value = 1;//当前页面
-  loadstatus.value = 'loading' //加载更多
+  loadStatus.value = 'loading' //加载更多
   getIndexList()//根据关键字查询瀑布流
 }
 //触底加载
