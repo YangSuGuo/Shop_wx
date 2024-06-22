@@ -72,7 +72,6 @@
 </template>
 
 <script setup>
-// 1.引入vue3中的ref模版
 import {ref} from 'vue';
 import {getIndexListApi} from "../../api/index";
 import {onReachBottom, onReady} from "@dcloudio/uni-app";

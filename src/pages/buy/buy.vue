@@ -25,15 +25,10 @@
             <view v-if="item.type == '0'" class="demo-tag-owner">
               闲置
             </view>
-            <view style="margin-left: 0;" class="demo-tag-text">
+            <view v-if="item.type == '1'" style="margin-left: 0;" class="demo-tag-text">
               求购
             </view>
           </view>
-          <!-- <view class="demo-shop">
-            {{item.shop}}
-          </view>
-          <u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)">
-          </u-icon> -->
         </view>
       </template>
       <template v-slot:right="{rightList}">
@@ -47,18 +42,13 @@
             {{ item.goodsPrice }}元
           </view>
           <view class="demo-tag">
-            <view class="demo-tag-owner">
+            <view v-if="item.type == '0'" class="demo-tag-owner">
               闲置
             </view>
-            <view class="demo-tag-text">
+            <view v-if="item.type == '1'" class="demo-tag-text">
               求购
             </view>
           </view>
-          <!-- <view class="demo-shop">
-            {{item.shop}}
-          </view>
-          <u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)">
-          </u-icon> -->
         </view>
       </template>
     </u-waterfall>
@@ -99,7 +89,7 @@
 	const change = (e) =>{
 		categoryId.value = tabList.value[e].categoryId
 		//清空列表数据
-		currentPages.value = 1;
+		currentPage.value = 1;
 		//清空瀑布流数据
 		uWaterfall1.value.clear()
 		//调用列表

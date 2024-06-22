@@ -7,12 +7,18 @@
     <!-- 标题 -->
     <view class="header">
       <view class="title">{{ goodsName }}</view>
-      <view class="price">￥{{ goodsPrice }}</view>
+      <view class="price">{{ goodsPrice }} ￥</view>
+    </view>
+
+    <view class="info-fa" style="margin-left: 20rpx; margin-bottom: 20rpx">
+      <u-tag text="自提" mode="light" style="margin-right: 8rpx" type="error"/>
+      <u-tag text="送货上门" mode="light" type="error"/>
     </view>
 
     <!-- 商品简介 -->
     <view class="info-fa">
-      <view class="info-left"/>
+      <view class="fa-left"></view>
+
       <view class="goodsInfo">物品简介</view>
     </view>
     <view class="info">
@@ -20,7 +26,7 @@
     </view>
 
     <view class="info-fa">
-      <view class="info-left"/>
+      <view class="fa-left"></view>
       <view class="goodsInfo">物品位置</view>
     </view>
 
@@ -34,16 +40,13 @@
     </view>
 
     <view class="info">
-      <u-steps active-color="#FF7660" style="width: 100%;" mode="number" :list="numlist" :current="4"/>
-    </view>
-
-    <view class="info-fa">
-      <view class="fa-left"/>
-      <view class="goodsInfo">交易方式</view>
-    </view>
-
-    <view class="info">
-      <view class="title-desc">自提|送货上门</view>
+      <u-steps
+          active-color="#FF7660"
+          un-active-color="#606266"
+          style="width: 100%; margin-top: 20rpx"
+          mode="dot"
+          :list="numlist"
+          :current="0"/>
     </view>
 
     <view class="info-fa">
@@ -60,9 +63,9 @@
       <view class="goodsInfo">联系方式</view>
     </view>
 
-    <view class="useinfo">
-      <view class="title-desc">电话:{{ phone }}</view>
-      <view class="title-desc">微信:{{ wxNum }}</view>
+    <view class="userinfo">
+      <view class="title-desc" style="margin-bottom: 8rpx">电话: {{ phone }}</view>
+      <view class="title-desc">微信: {{ wxNum }}</view>
     </view>
 
   </view>
@@ -70,7 +73,6 @@
   <!-- 底部菜单 -->
   <view class="navigation">
     <view class="left">
-
       <view class="item">
         <u-icon name="home" :size="40"/>
         <view class="text u-line-1" @click="toIndex">首页</view>
@@ -85,53 +87,69 @@
         <u-icon name="info-circle" :size="40"/>
         <view class="text u-line-1"> 举报</view>
       </view>
-
     </view>
 
     <view class="right">
-      <view class="cart btn u-line-1" @click="callPhone">电话咨询</view>
-      <view class="buy btn u-line-1" @click="toBuy">立即交易</view>
+      <u-button
+          type="warning"
+          shape="circle"
+          size="mini"
+          :ripple="true"
+          @click="callPhone"
+          style="margin-right: 20rpx"
+      >
+        电话咨询
+      </u-button>
+      <u-button
+          type="error"
+          shape="circle"
+          size="mini"
+          :ripple="true"
+          @click="toBuy"
+          style="margin-right: 20rpx"
+      >
+        立即交易
+      </u-button>
     </view>
 
   </view>
 
   <!-- 立刻交易 -->
-  <u-popup :mask-close-able="false" border-radius="15"  width="85%" height="200px" v-model="show" mode="center">
-	 <view style="padding: 50px 15px 30px 15px;">
-		 <u-form label-width="auto" :model="addModel" ref="form1">
-			 <u-form-item label="请输入金额" prop="price"></u-form-item>
-			 <u-input></u-input>
-		 </u-form>
-	 </view> 
-	 <view class="conBtn">
-	<u-button @click="cancel" style="margin-right: 15px;" type="info">取消交易</u-button>
-	<u-button @click="confirm" style="margin-left: 15px;" :custom-style="customStyle" type="error">确认交易</u-button>
-	 </view>
+  <u-popup :mask-close-able="false" border-radius="15" width="85%" height="200px" v-model="show" mode="center">
+    <view style="padding: 50px 15px 30px 15px;">
+      <u-form label-width="auto" :model="addModel" ref="form1">
+        <u-form-item label="请输入金额" prop="price">
+          <u-input v-model="addModel.price"/>
+        </u-form-item>
+      </u-form>
+    </view>
+    <view class="conBtn">
+      <u-button @click="cancel" style="margin-right: 15px;" type="info">取消交易</u-button>
+      <u-button @click="confirm" style="margin-left: 15px;" :custom-style="customStyle" type="error">确认交易</u-button>
+    </view>
   </u-popup>
-  
-   <u-popup :mask-close-able="false" border-radius="15" width="85%" height="200px" v-model="reportShow" mode="center">
-  		  <view style="padding: 50px 15px 30px 15px;">
-  			  <u-form label-width="auto" :model="reportModel" ref="form1">
-  				  <u-form-item label="请输入举报原因" prop="reason">
-  					  <u-input v-model="addModel.reason"></u-input>
-  				  </u-form-item>
-  			  </u-form>
-  		  </view>
-  		  <view class="conBtn">
-  		  			  <u-button @click="reportCancel" style="margin-right: 15px;" type="info">取消举报</u-button>
-  		  			  <u-button @click="reportConfirm" style="margin-left: 15px;" :custom-style="customStyle" type="error">确认举报	</u-button>
-  		  </view>
-  	  </u-popup>
-
-
-
-
+  <!-- 举报 -->
+  <u-popup :mask-close-able="false" border-radius="15" width="85%" height="200px" v-model="reportShow" mode="center">
+    <view style="padding: 50px 15px 30px 15px;">
+      <u-form label-width="auto" :model="reportModel" ref="form1">
+        <u-form-item label="请输入举报原因" prop="reason">
+          <u-input v-model="addModel.reason"></u-input>
+        </u-form-item>
+      </u-form>
+    </view>
+    <view class="conBtn">
+      <u-button @click="reportCancel" style="margin-right: 15px;" type="info">取消举报</u-button>
+      <u-button @click="reportConfirm" style="margin-left: 15px;" :custom-style="customStyle" type="error">确认举报
+      </u-button>
+    </view>
+  </u-popup>
 </template>
 
 <script setup>
 //轮播图
-import {ref, reactive,} from 'vue';
+import {reactive, ref,} from 'vue';
 import {onLoad} from '@dcloudio/uni-app';
+import {replaceOrderApi} from "../../api/order";
 //轮播图高度
 const height = ref('350')
 const indicatorDots = ref(true)
@@ -139,16 +157,12 @@ const autoplay = ref(2000)
 const interval = ref(2000)
 const duration = ref(500)
 const swipperList = ref([])
-// 	image: '/static/user.jpg'
-// },{
-// 	image: '/static/222.jpeg'
-// },{
-// 	image:'/static/11.jpg'
 
 //交易流程步骤条
-const numlist = ref([{
-  name: '发布信息'
-},
+const numlist = ref([
+  {
+    name: '发布信息'
+  },
   {
     name: '电话/微信沟通'
   },
@@ -167,7 +181,8 @@ const address = ref('')
 const wxNum = ref('')
 const phone = ref('')
 const createTime = ref('')
-
+//商品创建人id
+const creatUser = ref('')
 onLoad((options) => {
   const goods = JSON.parse(options.goods)
   goodsId.value = goods.goodsId;
@@ -181,9 +196,12 @@ onLoad((options) => {
   createTime.value = goods.createTime;
   phone.value = goods.phone;
   wxNum.value = goods.wxNum;
+  //要卖东西的用户
+  creatUser.value = goods.userId;
+  //商品id
+  addModel.goodsId = goods.goodsId
 
 })
-
 
 const toIndex = () => {
   uni.switchTab({
@@ -198,32 +216,57 @@ const callPhone = () => {
 
 const show = ref(false)
 const addModel = reactive({
-price: ""
+  price: "",
+  goodsId: "",
+//当前登录用户，即交易用户
+  orderUser: uni.getStorageSync("userId")
 })
- const toBuy = () => {
-	 show.value = true;
- }
+const toBuy = () => {
+  show.value = true;
+}
 const cancel = () => {
   show.value = false;
 }
-
-const confirm = () => {
-  show.value = false;
+//交易确定
+const confirm = async () => {
+  if (!addModel.price) {
+    await uni.showToast({
+      title: "请填写交易金额",
+      icon: "none",
+      mask: true,
+      duration: 3000
+    })
+    return;
+  }
+  let res = await replaceOrderApi(addModel)
+  if (res && res.code == 200) {
+    show.value = false;
+    uni.showToast({
+      title: "交易成功",
+      icon: "none",
+      mask: true,
+      duration: 3000
+    }).then(r =>
+        uni.switchTab({
+          url: "../unused/unused"
+        })
+    )
+  }
 }
 
 
 const reportShow = ref(false)
 const toRepory = () => {
-	reportShow.value = true;
+  reportShow.value = true;
 }
 const reportModel = reactive({
-	reason:""
+  reason: ""
 })
 const reportCancel = () => {
-	reportShow.value = false;
+  reportShow.value = false;
 }
 const reportConfirm = () => {
-	reportShow.value= false;
+  reportShow.value = false;
 }
 
 
@@ -232,25 +275,28 @@ const reportConfirm = () => {
 <style lang="scss">
 .header {
   display: flex;
+  align-items: center;
+  margin-top: 20rpx;
 }
 
 .title {
   color: #303133;
+  flex-grow: 1;
   font-weight: bold;
-  font-size: 30rpx;
+  font-size: 50rpx;
   padding: 20rpx;
 }
 
 .price {
   color: #FF7670;
-  font-size: 30rpx;
+  font-size: 40rpx;
+  margin-right: 20rpx;
   padding: 20rpx;
 }
 
 .info-fa {
   display: flex;
   align-items: center;
-
 }
 
 .fa-left {
@@ -268,12 +314,13 @@ const reportConfirm = () => {
 .info {
   display: flex;
   align-items: center;
+  margin-top: 20rpx;
   margin-bottom: 25px;
   padding: 0px 25px;
   background-color: #FFF;
 }
 
-.useinfo {
+.userinfo {
   display: flex;
   flex-direction: column;
   margin-left: 20px;
@@ -285,17 +332,20 @@ const reportConfirm = () => {
   margin-top: 100rpx;
   border: 2rpx solid #f2f2f2;
   background-color: #ffffff;
-  padding: 16rpx 0;
+  padding: 20rpx 0;
   position: fixed;
   width: 100%;
-  bottom: 0;
+  bottom: 30rpx;
 
   .left {
     display: flex;
     font-size: 20rpx;
+    margin-left: 30rpx;
+    align-items: center;
+    flex-grow: 1;
 
     .item {
-      margin: 0 30rpx;
+      margin-right: 40rpx;
 
       &.car {
         text-align: center;
@@ -314,13 +364,13 @@ const reportConfirm = () => {
     display: flex;
     font-size: 30rpx;
     align-items: center;
+    margin-right: 30rpx;
 
     .btn {
       line-height: 66rpx;
       padding: 0;
       border-radius: 36rpx;
       color: #ffffff;
-
     }
 
     .cart {

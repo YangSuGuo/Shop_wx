@@ -6,44 +6,46 @@
       <view style="padding: 20rpx">
         <u-form ref="form1" :model="addModel">
           <u-form-item prop="name" label-width="150rpx">
-            <u-radio-group v-model="addModel.name">
-              <u-radio @change="radioChange" v-for="(item, index) in list" :key="index" :disabled="item.disabled"
-                       :name="item.name"
-                       activeColor="#00cc33">
-                {{ item.name }}
-              </u-radio>
-            </u-radio-group>
+            <u-subsection :list="list" v-model="addModel.name" @change="radioChange"/>
           </u-form-item>
           <u-form-item prop="goodsName">
-            <u-input v-model="addModel.title" placeholder="请输入名称" clearable
+            <u-input v-model="addModel.title" placeholder="请输入名称" clearable trim
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
+          </u-form-item>
+          <u-form-item prop="categoryId">
+            <u-input v-model="addModel.categoryId" placeholder="请选择分类" clearable trim
+                     type="select"
+                     @click="openSelect()"
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
           <u-form-item prop="goodsDesc">
-            <u-input v-model="addModel.introduce" placeholder="请输入简介" clearable
+            <u-input v-model="addModel.introduce" placeholder="请输入简介" clearable trim
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
           <u-form-item prop="goodsPrice">
-            <u-input v-model="addModel.price" placeholder="请输入价格" clearable
+            <u-input v-model="addModel.price" placeholder="请输入价格" clearable trim maxlength=8
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
           <u-form-item label-width="auto" prop="userName">
-            <u-input v-model="addModel.userName" placeholder="请输入联系人" clearable
+            <u-input v-model="addModel.userName" placeholder="请输入联系人" clearable trim
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
           <u-form-item label-width="auto" prop="phone">
-            <u-input v-model="addModel.phone" placeholder="请输入联系电话" clearable
+            <u-input v-model="addModel.phone" placeholder="请输入联系电话" clearable trim maxlength=11
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
           <u-form-item label-width="auto" prop="wxNum">
-            <u-input v-model="addModel.wxNum" placeholder="请输入微信号" clearable
+            <u-input v-model="addModel.wxNum" placeholder="请输入微信号" clearable trim
                      prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
           <u-form-item label-width="auto" prop="address">
-            <u-input v-model="addModel.address" placeholder="请输入联系地址" clearable prefixIconStyle="font-size: 22px;color: #909399"/>
+            <u-input v-model="addModel.address" placeholder="请输入联系地址" clearable trim
+                     prefixIconStyle="font-size: 22px;color: #909399"/>
           </u-form-item>
-          <u-form-item label="图片:" prop="image"/>
+          <u-form-item prop="image"/>
           <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"/>
         </u-form>
+        <u-select v-model="show" :list="selectList" @confirm=""/>
         <u-button :custom-style="customStyle" @click="commit">发布</u-button>
       </view>
     </view>
@@ -54,11 +56,8 @@
 import {reactive, ref} from 'vue';
 import UFormItem from "../../uni_modules/vk-uview-ui/components/u-form-item/u-form-item.vue";
 import UInput from "../../uni_modules/vk-uview-ui/components/u-input/u-input.vue";
-//引入后端api
 import {categoryApi, releaseApi} from "../../api/goods.js";
-//引入onReady生命周期函数 页面渲染时读后端数据
 import {onReady} from "@dcloudio/uni-app";
-//引入http请求文件
 import http from '../../common/http.js'
 
 // 表单数据
@@ -78,17 +77,15 @@ const addModel = reactive({
   address: '',
 })
 
-// 物品发布类型
+// 发布类型
 const list = [
   {
     value: '0',
-    name: '闲置',
-    disabled: false
+    name: '闲置'
   },
   {
     value: '1',
-    name: '求购',
-    disabled: false
+    name: '求购'
   }
 ]
 
@@ -97,11 +94,6 @@ const action = ref(http.baseUrl + "/api/v1/upload/uploadImage")
 
 //存储图片路径
 const imgUrl = ref([])
-
-// 图片上传
-//const value = ref('')
-//const action = ref('')
-//const fileList = ref([])
 
 // 发布按钮
 const customStyle = reactive({
@@ -113,16 +105,12 @@ const customStyle = reactive({
 
 //下拉菜单显示
 const show = ref(false)
-
-//打开分类菜单
 const openSelect = () => {
   show.value = true;
 }
 
 //分类数据
 const selectList = ref([])
-
-//读取后端分类数据
 const getSelectList = async () => {
   let res = await categoryApi()
   if (res && res.code == 200) {
@@ -131,12 +119,6 @@ const getSelectList = async () => {
   }
 }
 
-//生命周期函数
-onReady(() => {
-  //获取分类数据
-  getSelectList()
-})
-
 //选择分类
 const selectConfirm = (e) => {
   console.log(e)
@@ -144,33 +126,33 @@ const selectConfirm = (e) => {
   addModel.categoryId = e[0].label;
 }
 
-//图片上传触发
+//生命周期函数
+onReady(() => {
+  //获取分类数据
+  getSelectList()
+})
+
+//图片上传
 const onchange = (res, index, lists, name) => {
   console.log(res.data)
   let result = JSON.parse(res.data)
-
-//把返回的图片放在imgurl
   imgUrl.value.push(http.baseUrl + result.data)
   console.log(imgUrl.value)
-//把数组里的图片转化为逗号分隔的字符串的一行数据
   let url = ''
   for (let k = 0; k < imgUrl.value.length; k++) {
     url = url + imgUrl.value[k] + ','
   }
   console.log(url)
-//去掉末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
 
 //删除图片
 const onRemove = (index) => {
-  //删除图片
   imgUrl.value.splice(index, 1)
   let url = ''
   for (let k = 0; k < imgUrl.value.length; k++) {
     url = url + imgUrl.value[k] + ','
   }
-  //去除末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
 
