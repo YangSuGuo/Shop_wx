@@ -9,14 +9,13 @@
             <u-subsection v-model="addModel.type" :list="list" />
           </u-form-item>
           <u-form-item prop="goodsName">
-            <u-input v-model="addModel.title" clearable placeholder="请输入名称" prefixIconStyle="font-size: 22px;color: #909399"
+            <u-input v-model="addModel.goodsName" clearable placeholder="请输入名称" prefixIconStyle="font-size: 22px;color: #909399"
                      trim/>
-
           </u-form-item>
 
           <u-form-item prop="categoryName">
             <u-input v-model="addModel.categoryName"  placeholder="请选择分类"  @click="openSelect"/>
-            <u-select @confirm="selectConfirm" v-model="show1" :list="selectList"></u-select>
+            <u-select @confirm="selectConfirm" v-model="show" :list="selectList"></u-select>
 
           </u-form-item>
           <u-form-item prop="goodsDesc">
@@ -24,7 +23,7 @@
                      trim/>
           </u-form-item>
           <u-form-item prop="goodsPrice">
-            <u-input v-model="addModel.price" clearable maxlength=8 placeholder="请输入价格" prefixIconStyle="font-size: 22px;color: #909399"
+            <u-input v-model="addModel.goodsPrice" clearable maxlength=8 placeholder="请输入价格" prefixIconStyle="font-size: 22px;color: #909399"
                      trim/>
           </u-form-item>
           <u-form-item label-width="auto" prop="userName">
@@ -64,7 +63,6 @@ import USelect from "../../uni_modules/vk-uview-ui/components/u-select/u-select.
 // 表单数据
 const addModel = reactive({
   userId: uni.getStorageSync('userId'),
-  name: '',
   type: '',
   goodsName: '',
   categoryId: '',
@@ -105,10 +103,10 @@ const customStyle = reactive({
 })
 
 //下拉菜单显示
-const show1 = ref(false)
+const show = ref(false)
 const openSelect = () => {
   console.log(1)
-  show1.value = true;
+  show.value = true;
 }
 
 //分类数据
