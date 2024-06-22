@@ -76,6 +76,21 @@ const addModel = reactive({
   address: '',
 })
 
+// 创建一个函数来清空addModel中的数据
+function clearAddModel() {
+  addModel.type = '';
+  addModel.goodsName = '';
+  addModel.categoryId = '';
+  addModel.categoryName = '';
+  addModel.goodsDesc = '';
+  addModel.goodsPrice = '';
+  addModel.userName = '';
+  addModel.phone = '';
+  addModel.wxNum = '';
+  addModel.image = '';
+  addModel.address = '';
+}
+
 // 发布类型
 const list = [
   {
@@ -119,7 +134,6 @@ const getSelectList = async () => {
   }
 }
 
-
 function selectConfirm  (e)  {
   console.log(e)
   addModel.categoryName = e[0].label;
@@ -155,15 +169,6 @@ const onRemove = (index) => {
   }
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
-
-//闲置 求购类型选择
-// const radioChange = (e) => {
-//   console.log(e)
-//   for (let i = 0; i < list.length; i++) {
-//       addModel.type = list[i].value;
-//       console.log(list[i].value)
-//   }
-// }
 
 //获取表单
 const form1 = ref()
@@ -217,7 +222,6 @@ const rules = reactive({
 const commit = () => {
   form1.value.validate(async (valid) => {
     if (valid) {
-
       let res = await releaseApi(addModel)
       if (res && res.code === 200) {
         uni.showToast({
@@ -236,8 +240,8 @@ const commit = () => {
           })
         }
 
-        //清空数据
-        form1.value.resetField();
+        // 清空数据
+        clearAddModel();
         imgUrl.value = [];
         addModel.image = '';
         imgRef.value.clear();

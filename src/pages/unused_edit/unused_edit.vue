@@ -1,41 +1,60 @@
 <template>
   <view class="u-wrap u-p-1-20 u-p-r-20">
-    <u-form ref="form1" :model="addModel">
-      <u-form-item label="类型:" label-width="
-150rpx" prop="name">
-        <u-radio-group v-model="addModel.name">
-          <u-radio v-for="(item, index) in list" :key="index" :disabled="item.disabled" :name="item.name"
-                   activeColor="#00cc33"
-                   @change="radioChange">
-            {{ item.name }}
-          </u-radio>
-        </u-radio-group>
-      </u-form-item>
-      <u-form-item label="名称" prop="goodsName">
-        <u-input v-model="addModel.goodsName" placeholder="请输入名称"/>
-      </u-form-item>
-      <u-form-item label="简介" prop="goodsDesc">
-        <u-input v-model="addModel.introduce" placeholder="请输入简介"/>
-      </u-form-item>
-      <u-form-item label="价格" prop="goodsPrice">
-        <u-input v-model="addModel.price" placeholder="请输入价格"/>
-      </u-form-item>
-      <u-form-item label="联系人" label-width="auto" prop="userName">
-        <u-input v-model="addModel.userName" placeholder="请输入联系人"/>
-      </u-form-item>
-      <u-form-item label="联系电话" label-width="auto" prop="phone">
-        <u-input v-model="addModel.phone" placeholder="请输入联系电话"/>
-      </u-form-item>
-      <u-form-item label="微信号:" label-width="auto" prop="wxNum">
-        <u-input v-model="addModel.wxNum" placeholder="请输入微信号"></u-input>
-      </u-form-item>
-      <u-form-item label="联系地址:" label-width="auto" prop="address">
-        <u-input v-model="addModel.address"></u-input>
-      </u-form-item>
-      <u-form-item label="图片:" prop="image"></u-form-item>
-      <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"></u-upload>
-    </u-form>
-    <u-button :custom-style="customStyle" @click="commit">确认修改</u-button>
+    <view class="content">
+      <image class="imgBanner"
+             src="https://img.picui.cn/free/2024/06/21/6675809ef1f73.png"/>
+      <view style="padding: 20rpx">
+        <u-form ref="form1" :model="addModel">
+          <u-form-item label-width="150rpx" prop="name">
+            <u-subsection v-model="addModel.type" :list="list"/>
+          </u-form-item>
+          <u-form-item prop="goodsName">
+            <u-input v-model="addModel.goodsName" clearable placeholder="请输入名称"
+                     prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
+          </u-form-item>
+
+          <u-form-item prop="categoryName">
+            <u-input v-model="addModel.categoryName" placeholder="请选择分类" @click="openSelect"/>
+            <u-select @confirm="selectConfirm" v-model="show" :list="selectList"/>
+
+          </u-form-item>
+          <u-form-item prop="goodsDesc">
+            <u-input v-model="addModel.goodsDesc" clearable placeholder="请输入简介"
+                     prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
+          </u-form-item>
+          <u-form-item prop="goodsPrice">
+            <u-input v-model="addModel.goodsPrice" clearable maxlength=8 placeholder="请输入价格"
+                     prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="userName">
+            <u-input v-model="addModel.userName" clearable placeholder="请输入联系人"
+                     prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="phone">
+            <u-input v-model="addModel.phone" clearable maxlength=11 placeholder="请输入联系电话"
+                     prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="wxNum">
+            <u-input v-model="addModel.wxNum" clearable placeholder="请输入微信号"
+                     prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
+          </u-form-item>
+          <u-form-item label-width="auto" prop="address">
+            <u-input v-model="addModel.address" clearable placeholder="请输入联系地址"
+                     prefixIconStyle="font-size: 22px;color: #909399"
+                     trim/>
+          </u-form-item>
+          <u-form-item prop="image"/>
+          <u-upload ref="imgRef" :action="action" @on-remove="onRemove" @on-change="onchange"/>
+        </u-form>
+        <u-button :custom-style="customStyle" @click="commit">发布</u-button>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -43,18 +62,16 @@
 import {reactive, ref} from 'vue';
 import UFormItem from "../../uni_modules/vk-uview-ui/components/u-form-item/u-form-item.vue";
 import UInput from "../../uni_modules/vk-uview-ui/components/u-input/u-input.vue";
-//引入后端api
-import {categoryApi} from "../../api/goods.js";
-//引入onReady生命周期函数 页面渲染时读后端数据
-import {onReady} from "@dcloudio/uni-app";
-//引入http请求文件
+import {categoryApi, editApi} from "../../api/goods.js";
+import {onLoad, onReady} from "@dcloudio/uni-app";
 import http from '../../common/http.js'
+import USelect from "../../uni_modules/vk-uview-ui/components/u-select/u-select.vue";
 
 // 表单数据
 const addModel = reactive({
   userId: uni.getStorageSync('userId'),
-  name: '',
   type: '',
+  goodsId: '',
   goodsName: '',
   categoryId: '',
   categoryName: '',
@@ -67,17 +84,47 @@ const addModel = reactive({
   address: '',
 })
 
-// 物品发布类型
+// 创建一个函数来清空addModel中的数据
+function clearAddModel() {
+  addModel.type = '';
+  addModel.goodsId = '';
+  addModel.goodsName = '';
+  addModel.categoryId = '';
+  addModel.categoryName = '';
+  addModel.goodsDesc = '';
+  addModel.goodsPrice = '';
+  addModel.userName = '';
+  addModel.phone = '';
+  addModel.wxNum = '';
+  addModel.image = '';
+  addModel.address = '';
+}
+
+onLoad((options) => {
+  const goods = JSON.parse(options.goods)
+  addModel.type = goods.type
+  addModel.goodsId = goods.goodsId;
+  addModel.goodsName = goods.goodsName
+  addModel.categoryId = goods.categoryId
+  addModel.categoryName = goods.categoryName
+  addModel.goodsDesc = goods.goodsDesc
+  addModel.goodsPrice = goods.goodsPrice
+  addModel.userName = goods.userName
+  addModel.phone = goods.phone
+  addModel.wxNum = goods.wxNum
+  addModel.image = goods.image.split(',')
+  addModel.address = goods.address
+})
+
+// 发布类型
 const list = [
   {
     value: '0',
-    name: '闲置',
-    disabled: false
+    name: '闲置'
   },
   {
     value: '1',
-    name: '求购',
-    disabled: false
+    name: '求购'
   }
 ]
 
@@ -86,11 +133,6 @@ const action = ref(http.baseUrl + "/api/v1/upload/uploadImage")
 
 //存储图片路径
 const imgUrl = ref([])
-
-// 图片上传
-//const value = ref('')
-//const action = ref('')
-//const fileList = ref([])
 
 // 发布按钮
 const customStyle = reactive({
@@ -102,41 +144,26 @@ const customStyle = reactive({
 
 //下拉菜单显示
 const show = ref(false)
-
-//打开分类菜单
 const openSelect = () => {
+  console.log(1)
   show.value = true;
 }
-//分类
 
 //分类数据
-const cageId = ref('')
 const selectList = ref([])
 const getSelectList = async () => {
   let res = await categoryApi()
-  if (res && res.code == 200) {
+  if (res && res.code === 200) {
     console.log(res)
     selectList.value = res.data;
-    //设置分类
-    if (cageId.value) {
-      for (let k = 0; k < selectList.value.length; k++) {
-        if (selectList.value[k].value == cageId.value) {
-          addModel.categoryName = selectList.VALUE[K].label;
-        }
-      }
-    }
   }
 }
 
-
-//读取后端分类数据
-// const getSelectList = async () => {
-//   let res = await categoryApi()
-//   if (res && res.code == 200) {
-//     console.log(res)
-//     selectList.value = res.data;
-//   }
-// }
+function selectConfirm(e) {
+  console.log(e)
+  addModel.categoryName = e[0].label;
+  addModel.categoryId = e[0].value;
+}
 
 //生命周期函数
 onReady(() => {
@@ -144,51 +171,28 @@ onReady(() => {
   getSelectList()
 })
 
-//选择分类
-const selectConfirm = (e) => {
-  console.log(e)
-  addModel.categoryName = e[0].label;
-  addModel.categoryId = e[0].label;
-}
-
-//图片上传触发
+//图片上传
 const onchange = (res, index, lists, name) => {
   console.log(res.data)
   let result = JSON.parse(res.data)
-
-//把返回的图片放在imgurl
   imgUrl.value.push(http.baseUrl + result.data)
   console.log(imgUrl.value)
-//把数组里的图片转化为逗号分隔的字符串的一行数据
   let url = ''
   for (let k = 0; k < imgUrl.value.length; k++) {
     url = url + imgUrl.value[k] + ','
   }
   console.log(url)
-//去掉末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
 }
 
 //删除图片
 const onRemove = (index) => {
-  //删除图片
   imgUrl.value.splice(index, 1)
   let url = ''
   for (let k = 0; k < imgUrl.value.length; k++) {
     url = url + imgUrl.value[k] + ','
   }
-  //去除末尾逗号
   addModel.image = url.substring(0, url.lastIndexOf(','))
-}
-
-//闲置 求购类型选择
-const radioChange = (e) => {
-  console.log(e)
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].name == e) {
-      addModel.type = list[i].value;
-    }
-  }
 }
 
 //获取表单
@@ -215,8 +219,7 @@ const rules = reactive({
   goodsPrice: [{
     required: true,
     message: "请选择价格",
-    trigger: ['change', 'blur'],
-    type: 'number',
+    trigger: ['change', 'blur']
   }],
   userName: [{
     required: true,
@@ -243,22 +246,31 @@ const rules = reactive({
 //提交表单
 const commit = () => {
   form1.value.validate(async (valid) => {
-    console.log(addModel)
     if (valid) {
       let res = await editApi(addModel)
-      if (res && res.code == 200) {
-        console.log(res)
-        uni.navigateTo({
-          url: '../my_unused/my_unused'
+      console.log(addModel)
+      if (res && res.code === 200) {
+        uni.showToast({
+          title: '发布成功',
+          duration: 2000,
         })
+        //如果发布的是闲置商品，发布成功后跳转到闲置页面
+        if (addModel.type == '0') {
+          uni.switchTab({
+            url: '../unused/unused'
+          })
+        } else {
+          //如果发布的是求购商品。发布成功后跳转到求购页面
+          uni.switchTab({
+            url: '../buy/buy'
+          })
+        }
 
-        //清空数据
-        form1.value.resetField();
+        // 清空数据
+        clearAddModel();
         imgUrl.value = [];
         addModel.image = '';
-        fileList.value = []
         imgRef.value.clear();
-
       }
     }
   })
@@ -270,45 +282,18 @@ const commit = () => {
     //获取分类数据
     getSelectList()
   })
-
 }
-onLoad((options) => {
-  imaUrl.value = [];
-  fileList.value = [];
-  const goods = JSON.parse(options.goods)
-  cageId.value = goods.categoryId;
-  //回显数据
-  addModel.goodsId = goods.goodsId;
-  addModel.categoryId = goods.categoryId;
-  addModel.image = goods.image;
-  //图片回显
-  if (goods.image) {
-    let imgs = goods.image.split(",")
-    for (let g = 0; g < imgs.length; g++) {
-      imgUrl.value.push(imgs[g]);
-      let obj = {url: ''}
-      obj.url = imgs[g]
-      fileList.value.push(obj)
-    }
-  }
-  addModel.goodsName = goods.goodsName;
-  addModel.goodsDesc = goods.goodsDesc;
-  addModel.address = goods.address;
-  addModel.goodsPrice = goods.goodsPrice;
-  addModel.userName = goods.userName;
-  addModel.phone = goods.phone;
-  addModel.type = goods.type;
-  addModel.wxNum = goods.wxNum;
-//回显商品类型
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].value == goods.type) {
-      addModel.name = list[i].name;
-    }
-  }
-})
-
 </script>
 
-<style>
+<style scoped>
+.content {
+  padding: 40rpx;
+}
 
+.imgBanner {
+  width: 100%;
+  height: 250rpx;
+  border-radius: 20rpx;
+  background: #FFF;
+}
 </style>

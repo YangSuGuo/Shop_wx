@@ -31,13 +31,13 @@ export const getMyGoodsListApi = (parm) => {
 }
 //修改发布后的商品信息
 export const editApi = (parm) => {
-    return http.get('/api/v1/goods/edit', parm)
+    return http.post('/api/v1/goods/edit', parm)
 }
 //下架
 export const upanddownpi = (parm) => {
-    return http.get('/api/v1/goods/upanddown', parm)
+    return http.post('/api/v1/goods/upanddown', parm)
 }
 //删除
 export const deleteApi = (parm) => {
-    return http.get('/api/v1/goods/delete', parm)
+    return http.post('/api/v1/goods/delete', parm)
 }

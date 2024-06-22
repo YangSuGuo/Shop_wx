@@ -198,7 +198,6 @@ onLoad((options) => {
   creatUser.value = goods.userId;
   //商品id
   addModel.goodsId = goods.goodsId
-
 })
 
 const toIndex = () => {

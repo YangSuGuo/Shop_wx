@@ -58,7 +58,7 @@
 //引入相关函数
 import {ref} from 'vue';
 import {onReachBottom, onReady} from '@dcloudio/uni-app';
-import {getMyGoodsListApi} from "../../api/goods";
+import {deleteApi, getMyGoodsListApi} from "../../api/goods";
 
 const list = ref([])
 //总页数
@@ -106,7 +106,7 @@ const editBtn = (item) => {
 //跳转查看闲置页面
 const lookBtn = (item) => {
   uni.navigateTo({
-    url: "../look_my_unused/look_my_unused?goods=" + JSON.stringify(item)
+    url: "../buy_detail/buy_detail?goods=" + JSON.stringify(item)
   })
 }
 
@@ -117,7 +117,6 @@ const deleteBtn = (item) => {
   deleteId.value = item.goodsId;
   show.value = true;
   console.log(deleteId.value)
-
 }
 
 const cancel = () => {
@@ -131,11 +130,12 @@ const confirm = async () => {
   if (res && res.code == 200) {
     list.value = []
     parm.currentPage = 1;
-    getMyUnusedList()//重新获取商品列表
+    getMyUnusedList()
     show.value = false;
     //1306
   }
 }
+
 onReady(() => {
   getMyUnusedList()
 })
