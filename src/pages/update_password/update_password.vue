@@ -1,18 +1,11 @@
 <template>
-  <view>
-
-  </view>
+  <h1>修改密码</h1>
 </template>
 
-<script>
-export default {
-  data() {
-    return {}
-  },
-  methods: {}
-}
+<script setup>
+
 </script>
 
-<style>
+<style lang="scss">
 
 </style>

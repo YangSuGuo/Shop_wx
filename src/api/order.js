@@ -12,17 +12,20 @@ export const replaceOrderApi = (parm) => {
 
 //查询我的出售订单
 export const getSellOrderApi = (parm) => {
-    return http.post('/api/v1/goodsOrder/getSellOrder', parm)
+    return http.get('/api/v1/goodsOrder/getSellOrder', parm)
 }
 
-//查询我的订单
-// /getMyGoodsList
-// parm 商品类型：0闲置 1求购
-export const getMyOrderApi = (parm) => {
-    return http.post('/api/v1/goodsOrder/replaceOrder', parm)
+//查询我的求购订单
+export const getMyOrderApi= (parm) => {
+    return http.get('/api/v1/goodsOrder/getMyOrder', parm)
 }
 
-//删除
+// todo 我的收藏
+export const getApi = (parm) => {
+    return http.post('/api/v1/', parm)
+}
+
+//删除订单
 export const deleteOrderApi = (parm) => {
     return http.post('/api/v1/goodsOrder/deleteOrder', parm)
 }

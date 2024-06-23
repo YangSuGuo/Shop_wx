@@ -55,7 +55,6 @@
 </template>
 
 <script setup>
-//引入相关函数
 import {ref} from 'vue';
 import {onReachBottom, onReady} from '@dcloudio/uni-app';
 import {deleteApi, getMyGoodsListApi} from "../../api/goods";
