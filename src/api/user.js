@@ -15,3 +15,7 @@ export const editInfoApi = (parm) => {
 export const getInfoApi = (parm) => {
     return http.get('/api/v1/wxUser/getInfo', parm)
 }
+//修改密码
+export const getWxUpdatePasswordApi = (parm) => {
+    return http.post('/api/v1/wxUser/wxUpdatePassword', parm)
+}
