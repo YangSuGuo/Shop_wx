@@ -35,7 +35,7 @@ import {reactive, ref} from 'vue';
 import {onLoad, onReady} from '@dcloudio/uni-app';
 import {editInfoApi} from '../../api/user.js'
 
-import http from '../../common/http.js'
+import http from '../../http/http.js'
 
 const addModel = reactive({
   userId: uni.getStorageSync("userId"),

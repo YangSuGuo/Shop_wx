@@ -64,7 +64,7 @@ import UFormItem from "../../uni_modules/vk-uview-ui/components/u-form-item/u-fo
 import UInput from "../../uni_modules/vk-uview-ui/components/u-input/u-input.vue";
 import {categoryApi, editApi} from "../../api/goods.js";
 import {onLoad, onReady} from "@dcloudio/uni-app";
-import http from '../../common/http.js'
+import http from '../../http/http.js'
 import USelect from "../../uni_modules/vk-uview-ui/components/u-select/u-select.vue";
 
 // 表单数据

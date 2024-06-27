@@ -1,4 +1,4 @@
-import http from '../common/http.js'
+import http from '../http/http.js'
 //发布页面商品分类
 export const categoryApi = (parm) => {
     return http.get('/api/v1/category/getSelectList', parm)

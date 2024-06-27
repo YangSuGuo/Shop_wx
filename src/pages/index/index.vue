@@ -15,20 +15,23 @@
     </view>
 
     <!-- 瀑布流 -->
-    <view class="">
-      <u-waterfall v-if="flowList.length > 0" ref="uWaterFall1" v-model="flowList">
+    <view>
+      <u-waterfall v-if="flowList.length > 0"
+                   ref="uWaterFall1"
+                   v-model="flowList">
         <template v-slot:left="{leftList}">
-          <view v-for="(item, index) in leftList" :key="index" class="demo-warter-left">
-            <u-lazy-load :image="item.image" :index="index" border-radius="10" threshold="-450"/>
-
+          <view v-for="(item, index) in leftList" :key="index"
+                class="demo-warter-left">
+            <u-lazy-load :image="item.image"
+                         :index="index"
+                         border-radius="10"
+                         threshold="-450"/>
             <view class="demo-title">
               {{ item.goodsName }}
             </view>
-
             <view class="demo-price">
               {{ item.goodsPrice }}元
             </view>
-
             <view class="demo-tag">
               <view v-if="item.type =='0'" class="demo-tag-owner">
                 闲置
@@ -37,8 +40,6 @@
                 求购
               </view>
             </view>
-
-
           </view>
         </template>
         <template v-slot:right="{rightList}">

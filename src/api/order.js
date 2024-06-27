@@ -1,4 +1,4 @@
-import http from '../common/http.js'
+import http from '../http/http.js'
 
 //查询所有分类
 export const getCateListApi = () => {
